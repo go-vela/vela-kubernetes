@@ -6,7 +6,6 @@ package main
 
 import (
 	"os"
-
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -46,6 +45,24 @@ func main() {
 			Usage:  "set log level - options: (trace|debug|info|warn|error|fatal|panic)",
 			Value:  "info",
 		},
+
+		// Kubernetes Flags
+
+		cli.StringFlag{
+			EnvVar: "PARAMETER_CONFIG,KUBE_CONFIG,KUBERNETES_CONFIG",
+			Name:   "kubernetes.config",
+			Usage:  "kubernetes cluster configuration",
+		},
+		cli.StringFlag{
+			EnvVar: "PARAMETER_CONTEXT,KUBE_CONTEXT,KUBERNETES_CONTEXT",
+			Name:   "kubernetes.context",
+			Usage:  "kubernetes cluster context to interact with",
+		},
+		cli.StringFlag{
+			EnvVar: "PARAMETER_NAMESPACE,KUBE_NAMESPACE,KUBERNETES_NAMESPACE",
+			Name:   "kubernetes.namespace",
+			Usage:  "kubernetes cluster namespace to interact with",
+		},
 	}
 
 	err := app.Run(os.Args)
@@ -83,7 +100,14 @@ func run(c *cli.Context) error {
 	}).Info("Vela Kubernetes Plugin")
 
 	// create the plugin
-	p := &Plugin{}
+	p := &Plugin{
+		// Kubernetes configuration
+		Kubernetes: &Kubernetes{
+			Config:    c.String("kubernetes.config"),
+			Context:   c.String("kubernetes.context"),
+			Namespace: c.String("kubernetes.namespace"),
+		},
+	}
 
 	// validate the plugin
 	err := p.Validate()

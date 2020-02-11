@@ -38,10 +38,28 @@ func TestKubernetes_Plugin_Exec(t *testing.T) {
 
 func TestKubernetes_Plugin_Validate(t *testing.T) {
 	// setup types
-	p := &Plugin{}
+	p := &Plugin{
+		Kubernetes: &Kubernetes{
+			Config:    "config",
+			Context:   "context",
+			Namespace: "namespace",
+		},
+	}
 
 	err := p.Validate()
 	if err != nil {
 		t.Errorf("Validate returned err: %v", err)
+	}
+}
+
+func TestKubernetes_Plugin_Validate_NoKubernetes(t *testing.T) {
+	// setup types
+	p := &Plugin{
+		Kubernetes: &Kubernetes{},
+	}
+
+	err := p.Validate()
+	if err == nil {
+		t.Errorf("Validate should have returned err")
 	}
 }
