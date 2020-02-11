@@ -82,5 +82,15 @@ func run(c *cli.Context) error {
 		"time": time.Now(),
 	}).Info("Vela Kubernetes Plugin")
 
-	return nil
+	// create the plugin
+	p := &Plugin{}
+
+	// validate the plugin
+	err := p.Validate()
+	if err != nil {
+		return err
+	}
+
+	// execute the plugin
+	return p.Exec()
 }
