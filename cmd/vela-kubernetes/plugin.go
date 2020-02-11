@@ -11,7 +11,12 @@ import (
 )
 
 // Plugin represents the configuration loaded for the plugin.
-type Plugin struct{}
+type Plugin struct {
+	// config arguments loaded for the plugin
+	Config *Config
+	// kubernetes arguments loaded for the plugin
+	Kubernetes *Kubernetes
+}
 
 // Command formats and outputs the command necessary for
 // kubectl to manage Kubernetes resources.
@@ -34,6 +39,18 @@ func (p *Plugin) Exec() error {
 // Validate verifies the plugin is properly configured.
 func (p *Plugin) Validate() error {
 	logrus.Debug("validating plugin configuration")
+
+	// validate config configuration
+	err := p.Config.Validate()
+	if err != nil {
+		return err
+	}
+
+	// validate Kubernetes configuration
+	err = p.Kubernetes.Validate()
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

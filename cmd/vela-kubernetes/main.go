@@ -6,7 +6,6 @@ package main
 
 import (
 	"os"
-
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -46,6 +45,48 @@ func main() {
 			Usage:  "set log level - options: (trace|debug|info|warn|error|fatal|panic)",
 			Value:  "info",
 		},
+
+		// Config Flags
+
+		cli.StringSliceFlag{
+			EnvVar: "PARAMETER_FILES,CONFIG_FILES",
+			Name:   "config.files",
+			Usage:  "kubernetes files or directories to interact with",
+		},
+		cli.StringFlag{
+			EnvVar: "PARAMETER_IMAGES,CONFIG_IMAGES",
+			Name:   "config.images",
+			Usage:  "container images from files to interact with",
+		},
+		cli.StringSliceFlag{
+			EnvVar: "PARAMETER_STATUSES,CONFIG_STATUSES",
+			Name:   "config.statuses",
+			Usage:  "kubernetes resources to watch status on",
+		},
+		cli.DurationFlag{
+			EnvVar: "PARAMETER_TIMEOUT,CONFIG_TIMEOUT",
+			Name:   "config.timeout",
+			Usage:  "maximum duration to watch status on kubernetes resources",
+			Value:  5 * time.Minute,
+		},
+
+		// Kubernetes Flags
+
+		cli.StringFlag{
+			EnvVar: "PARAMETER_CONFIG,KUBE_CONFIG,KUBERNETES_CONFIG",
+			Name:   "kubernetes.config",
+			Usage:  "kubernetes cluster configuration",
+		},
+		cli.StringFlag{
+			EnvVar: "PARAMETER_CONTEXT,KUBE_CONTEXT,KUBERNETES_CONTEXT",
+			Name:   "kubernetes.context",
+			Usage:  "kubernetes cluster context to interact with",
+		},
+		cli.StringFlag{
+			EnvVar: "PARAMETER_NAMESPACE,KUBE_NAMESPACE,KUBERNETES_NAMESPACE",
+			Name:   "kubernetes.namespace",
+			Usage:  "kubernetes cluster namespace to interact with",
+		},
 	}
 
 	err := app.Run(os.Args)
@@ -83,7 +124,21 @@ func run(c *cli.Context) error {
 	}).Info("Vela Kubernetes Plugin")
 
 	// create the plugin
-	p := &Plugin{}
+	p := &Plugin{
+		// config configuration
+		Config: &Config{
+			Files:    c.StringSlice("config.files"),
+			Images:   c.StringSlice("config.images"),
+			Statuses: c.StringSlice("config.statuses"),
+			Timeout:  c.Duration("config.timeout"),
+		},
+		// Kubernetes configuration
+		Kubernetes: &Kubernetes{
+			Config:    c.String("kubernetes.config"),
+			Context:   c.String("kubernetes.context"),
+			Namespace: c.String("kubernetes.namespace"),
+		},
+	}
 
 	// validate the plugin
 	err := p.Validate()
