@@ -12,6 +12,8 @@ import (
 
 // Plugin represents the configuration loaded for the plugin.
 type Plugin struct {
+	// config arguments loaded for the plugin
+	Config *Config
 	// kubernetes arguments loaded for the plugin
 	Kubernetes *Kubernetes
 }
@@ -38,8 +40,14 @@ func (p *Plugin) Exec() error {
 func (p *Plugin) Validate() error {
 	logrus.Debug("validating plugin configuration")
 
+	// validate config configuration
+	err := p.Config.Validate()
+	if err != nil {
+		return err
+	}
+
 	// validate Kubernetes configuration
-	err := p.Kubernetes.Validate()
+	err = p.Kubernetes.Validate()
 	if err != nil {
 		return err
 	}

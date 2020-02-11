@@ -46,6 +46,30 @@ func main() {
 			Value:  "info",
 		},
 
+		// Config Flags
+
+		cli.StringSliceFlag{
+			EnvVar: "PARAMETER_FILES,CONFIG_FILES",
+			Name:   "config.files",
+			Usage:  "kubernetes files or directories to interact with",
+		},
+		cli.StringFlag{
+			EnvVar: "PARAMETER_IMAGES,CONFIG_IMAGES",
+			Name:   "config.images",
+			Usage:  "container images from files to interact with",
+		},
+		cli.StringSliceFlag{
+			EnvVar: "PARAMETER_STATUSES,CONFIG_STATUSES",
+			Name:   "config.statuses",
+			Usage:  "kubernetes resources to watch status on",
+		},
+		cli.DurationFlag{
+			EnvVar: "PARAMETER_TIMEOUT,CONFIG_TIMEOUT",
+			Name:   "config.timeout",
+			Usage:  "maximum duration to watch status on kubernetes resources",
+			Value:  5 * time.Minute,
+		},
+
 		// Kubernetes Flags
 
 		cli.StringFlag{
@@ -101,6 +125,13 @@ func run(c *cli.Context) error {
 
 	// create the plugin
 	p := &Plugin{
+		// config configuration
+		Config: &Config{
+			Files:    c.StringSlice("config.files"),
+			Images:   c.StringSlice("config.images"),
+			Statuses: c.StringSlice("config.statuses"),
+			Timeout:  c.Duration("config.timeout"),
+		},
 		// Kubernetes configuration
 		Kubernetes: &Kubernetes{
 			Config:    c.String("kubernetes.config"),
