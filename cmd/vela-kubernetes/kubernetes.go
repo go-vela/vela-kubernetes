@@ -6,9 +6,15 @@ package main
 
 import (
 	"fmt"
+	"os/user"
+	"path/filepath"
+
+	"github.com/spf13/afero"
 
 	"github.com/sirupsen/logrus"
 )
+
+var appFS = afero.NewOsFs()
 
 // Kubernetes represents the plugin configuration for Kubernetes information.
 type Kubernetes struct {
@@ -18,6 +24,31 @@ type Kubernetes struct {
 	Context string
 	// cluster namespace to use for interactions
 	Namespace string
+}
+
+// Write creates a .kube/config file in the home directory of the current user.
+func (k *Kubernetes) Write() error {
+	logrus.Trace("writing kubernetes configuration file")
+
+	// use custom filesystem which enables us to test
+	a := &afero.Afero{
+		Fs: appFS,
+	}
+
+	// set default home directory for root user
+	home := "/root"
+
+	// capture current user running commands
+	u, err := user.Current()
+	if err == nil {
+		// set home directory to current user
+		home = u.HomeDir
+	}
+
+	// create full path for .kube/config file
+	path := filepath.Join(home, ".kube/config")
+
+	return a.WriteFile(path, []byte(k.Config), 0600)
 }
 
 // Validate verifies the Kubernetes is properly configured.

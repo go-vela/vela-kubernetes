@@ -6,6 +6,8 @@ package main
 
 import (
 	"testing"
+
+	"github.com/spf13/afero"
 )
 
 func TestKubernetes_Kubernetes_Validate(t *testing.T) {
@@ -58,5 +60,22 @@ func TestKubernetes_Kubernetes_Validate_NoNamespace(t *testing.T) {
 	err := k.Validate()
 	if err == nil {
 		t.Errorf("Validate should have returned err")
+	}
+}
+
+func TestKubernetes_Kubernetes_Write(t *testing.T) {
+	// setup filesystem
+	appFS = afero.NewMemMapFs()
+
+	// setup types
+	k := &Kubernetes{
+		Config:    "config",
+		Context:   "context",
+		Namespace: "namespace",
+	}
+
+	err := k.Write()
+	if err != nil {
+		t.Errorf("Write returned err: %v", err)
 	}
 }
