@@ -24,7 +24,7 @@ func TestKubernetes_Config_Validate(t *testing.T) {
 	}
 }
 
-func TestKubernetes_Config_Validate_NoConfig(t *testing.T) {
+func TestKubernetes_Config_Validate_NoFile(t *testing.T) {
 	// setup types
 	c := Config{
 		Context:   "context",
@@ -70,6 +70,22 @@ func TestKubernetes_Kubernetes_Write(t *testing.T) {
 	// setup types
 	c := Config{
 		File:      "file",
+		Context:   "context",
+		Namespace: "namespace",
+	}
+
+	err := c.Write()
+	if err != nil {
+		t.Errorf("Write returned err: %v", err)
+	}
+}
+
+func TestKubernetes_Kubernetes_Write_NoFile(t *testing.T) {
+	// setup filesystem
+	appFS = afero.NewMemMapFs()
+
+	// setup types
+	c := Config{
 		Context:   "context",
 		Namespace: "namespace",
 	}

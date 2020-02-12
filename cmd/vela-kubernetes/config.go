@@ -57,6 +57,11 @@ func (c *Config) Write() error {
 		Fs: appFS,
 	}
 
+	// check if config file content is provided
+	if len(c.File) == 0 {
+		return nil
+	}
+
 	// set default home directory for root user
 	home := "/root"
 
