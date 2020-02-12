@@ -5,28 +5,19 @@
 package main
 
 import (
-	"os/exec"
-
 	"github.com/sirupsen/logrus"
 )
 
 // Plugin represents the configuration loaded for the plugin.
 type Plugin struct {
+	// apply arguments loaded for the plugin
+	Apply *Apply
 	// config arguments loaded for the plugin
 	Config *Config
-	// kubernetes arguments loaded for the plugin
-	Kubernetes *Kubernetes
-}
-
-// Command formats and outputs the command necessary for
-// kubectl to manage Kubernetes resources.
-func (p *Plugin) Command() *exec.Cmd {
-	logrus.Debug("creating kubectl command from plugin configuration")
-
-	// variable to store flags for command
-	var flags []string
-
-	return exec.Command(kubectlBin, flags...)
+	// patch arguments loaded for the plugin
+	Patch *Patch
+	// status arguments loaded for the plugin
+	Status *Status
 }
 
 // Exec formats and runs the commands for managing resources in Kubernetes.
@@ -40,14 +31,26 @@ func (p *Plugin) Exec() error {
 func (p *Plugin) Validate() error {
 	logrus.Debug("validating plugin configuration")
 
-	// validate config configuration
-	err := p.Config.Validate()
+	// validate apply configuration
+	err := p.Apply.Validate()
 	if err != nil {
 		return err
 	}
 
-	// validate Kubernetes configuration
-	err = p.Kubernetes.Validate()
+	// validate config configuration
+	err = p.Config.Validate()
+	if err != nil {
+		return err
+	}
+
+	// validate patch configuration
+	err = p.Patch.Validate()
+	if err != nil {
+		return err
+	}
+
+	// validate status configuration
+	err = p.Status.Validate()
 	if err != nil {
 		return err
 	}

@@ -6,16 +6,16 @@ package main
 
 import (
 	"testing"
-	"time"
+
+	"github.com/spf13/afero"
 )
 
 func TestKubernetes_Config_Validate(t *testing.T) {
 	// setup types
-	c := &Config{
-		Files:    []string{"files"},
-		Images:   []string{"images"},
-		Statuses: []string{"statuses"},
-		Timeout:  5 * time.Minute,
+	c := Config{
+		File:      "file",
+		Context:   "context",
+		Namespace: "namespace",
 	}
 
 	err := c.Validate()
@@ -24,12 +24,11 @@ func TestKubernetes_Config_Validate(t *testing.T) {
 	}
 }
 
-func TestKubernetes_Config_Validate_NoFiles(t *testing.T) {
+func TestKubernetes_Config_Validate_NoFile(t *testing.T) {
 	// setup types
-	c := &Config{
-		Images:   []string{"images"},
-		Statuses: []string{"statuses"},
-		Timeout:  5 * time.Minute,
+	c := Config{
+		Context:   "context",
+		Namespace: "namespace",
 	}
 
 	err := c.Validate()
@@ -38,12 +37,11 @@ func TestKubernetes_Config_Validate_NoFiles(t *testing.T) {
 	}
 }
 
-func TestKubernetes_Config_Validate_NoImages(t *testing.T) {
+func TestKubernetes_Config_Validate_NoContext(t *testing.T) {
 	// setup types
-	c := &Config{
-		Files:    []string{"files"},
-		Statuses: []string{"statuses"},
-		Timeout:  5 * time.Minute,
+	c := Config{
+		File:      "file",
+		Namespace: "namespace",
 	}
 
 	err := c.Validate()
@@ -52,12 +50,11 @@ func TestKubernetes_Config_Validate_NoImages(t *testing.T) {
 	}
 }
 
-func TestKubernetes_Config_Validate_NoStatuses(t *testing.T) {
+func TestKubernetes_Config_Validate_NoNamespace(t *testing.T) {
 	// setup types
-	c := &Config{
-		Files:   []string{"files"},
-		Images:  []string{"images"},
-		Timeout: 5 * time.Minute,
+	c := Config{
+		File:    "file",
+		Context: "context",
 	}
 
 	err := c.Validate()
@@ -66,16 +63,35 @@ func TestKubernetes_Config_Validate_NoStatuses(t *testing.T) {
 	}
 }
 
-func TestKubernetes_Config_Validate_NoTimeout(t *testing.T) {
+func TestKubernetes_Kubernetes_Write(t *testing.T) {
+	// setup filesystem
+	appFS = afero.NewMemMapFs()
+
 	// setup types
-	c := &Config{
-		Files:    []string{"files"},
-		Images:   []string{"images"},
-		Statuses: []string{"statuses"},
+	c := Config{
+		File:      "file",
+		Context:   "context",
+		Namespace: "namespace",
 	}
 
-	err := c.Validate()
-	if err == nil {
-		t.Errorf("Validate should have returned err")
+	err := c.Write()
+	if err != nil {
+		t.Errorf("Write returned err: %v", err)
+	}
+}
+
+func TestKubernetes_Kubernetes_Write_NoFile(t *testing.T) {
+	// setup filesystem
+	appFS = afero.NewMemMapFs()
+
+	// setup types
+	c := Config{
+		Context:   "context",
+		Namespace: "namespace",
+	}
+
+	err := c.Write()
+	if err != nil {
+		t.Errorf("Write returned err: %v", err)
 	}
 }
