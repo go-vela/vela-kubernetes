@@ -5,8 +5,38 @@
 package main
 
 import (
+	"fmt"
+	"os/exec"
+	"reflect"
 	"testing"
 )
+
+func TestKubernetes_Patch_Command(t *testing.T) {
+	// setup types
+	c := &Config{
+		File:      "file",
+		Context:   "context",
+		Namespace: "namespace",
+	}
+
+	p := &Patch{
+		Images: []string{"images"},
+	}
+
+	want := exec.Command(
+		kubectlBin,
+		fmt.Sprintf("--namespace=%s", c.Namespace),
+		fmt.Sprintf("--context=%s", c.Context),
+		"patch",
+		"--output=json",
+	)
+
+	got := p.Command(c)
+
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("Command is %v, want %v", got, want)
+	}
+}
 
 func TestKubernetes_Patch_Validate(t *testing.T) {
 	// setup types
