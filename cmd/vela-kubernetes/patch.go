@@ -18,11 +18,11 @@ type Patch struct {
 
 // Validate verifies the Patch is properly configured.
 func (p *Patch) Validate() error {
-	logrus.Trace("validating config configuration")
+	logrus.Trace("validating patch configuration")
 
 	// verify images are provided
 	if len(p.Images) == 0 {
-		return fmt.Errorf("no config images provided")
+		return fmt.Errorf("no patch images provided")
 	}
 
 	return nil

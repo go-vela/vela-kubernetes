@@ -46,46 +46,52 @@ func main() {
 			Value:  "info",
 		},
 
+		// Apply Flags
+
+		cli.StringSliceFlag{
+			EnvVar: "PARAMETER_FILES,APPLY_FILES",
+			Name:   "apply.files",
+			Usage:  "kubernetes files or directories to apply",
+		},
+
 		// Config Flags
 
-		cli.StringSliceFlag{
-			EnvVar: "PARAMETER_FILES,CONFIG_FILES",
-			Name:   "config.files",
-			Usage:  "kubernetes files or directories to interact with",
-		},
 		cli.StringFlag{
-			EnvVar: "PARAMETER_IMAGES,CONFIG_IMAGES",
-			Name:   "config.images",
-			Usage:  "container images from files to interact with",
-		},
-		cli.StringSliceFlag{
-			EnvVar: "PARAMETER_STATUSES,CONFIG_STATUSES",
-			Name:   "config.statuses",
-			Usage:  "kubernetes resources to watch status on",
-		},
-		cli.DurationFlag{
-			EnvVar: "PARAMETER_TIMEOUT,CONFIG_TIMEOUT",
-			Name:   "config.timeout",
-			Usage:  "maximum duration to watch status on kubernetes resources",
-			Value:  5 * time.Minute,
-		},
-
-		// Kubernetes Flags
-
-		cli.StringFlag{
-			EnvVar: "PARAMETER_CONFIG,KUBE_CONFIG,KUBERNETES_CONFIG",
-			Name:   "kubernetes.config",
+			EnvVar: "PARAMETER_CONFIG,CONFIG_FILE,KUBE_CONFIG",
+			Name:   "config.file",
 			Usage:  "kubernetes cluster configuration",
 		},
 		cli.StringFlag{
-			EnvVar: "PARAMETER_CONTEXT,KUBE_CONTEXT,KUBERNETES_CONTEXT",
-			Name:   "kubernetes.context",
+			EnvVar: "PARAMETER_CONTEXT,CONFIG_CONTEXT,KUBE_CONTEXT",
+			Name:   "config.context",
 			Usage:  "kubernetes cluster context to interact with",
 		},
 		cli.StringFlag{
-			EnvVar: "PARAMETER_NAMESPACE,KUBE_NAMESPACE,KUBERNETES_NAMESPACE",
-			Name:   "kubernetes.namespace",
+			EnvVar: "PARAMETER_NAMESPACE,CONFIG_NAMESPACE,KUBE_NAMESPACE",
+			Name:   "config.namespace",
 			Usage:  "kubernetes cluster namespace to interact with",
+		},
+
+		// Patch Flags
+
+		cli.StringFlag{
+			EnvVar: "PARAMETER_IMAGES,PATCH_IMAGES",
+			Name:   "patch.images",
+			Usage:  "container images from files to patch",
+		},
+
+		// Status Flags
+
+		cli.StringSliceFlag{
+			EnvVar: "PARAMETER_STATUSES,STATUS_RESOURCES",
+			Name:   "status.resources",
+			Usage:  "kubernetes resources to watch status on",
+		},
+		cli.DurationFlag{
+			EnvVar: "PARAMETER_TIMEOUT,STATUS_TIMEOUT",
+			Name:   "status.timeout",
+			Usage:  "maximum duration to watch status on kubernetes resources",
+			Value:  5 * time.Minute,
 		},
 	}
 
@@ -125,18 +131,24 @@ func run(c *cli.Context) error {
 
 	// create the plugin
 	p := &Plugin{
+		// apply configuration
+		Apply: &Apply{
+			Files: c.StringSlice("apply.files"),
+		},
 		// config configuration
 		Config: &Config{
-			Files:    c.StringSlice("config.files"),
-			Images:   c.StringSlice("config.images"),
-			Statuses: c.StringSlice("config.statuses"),
-			Timeout:  c.Duration("config.timeout"),
+			File:      c.String("config.file"),
+			Context:   c.String("config.context"),
+			Namespace: c.String("config.namespace"),
 		},
-		// Kubernetes configuration
-		Kubernetes: &Kubernetes{
-			Config:    c.String("kubernetes.config"),
-			Context:   c.String("kubernetes.context"),
-			Namespace: c.String("kubernetes.namespace"),
+		// patch configuration
+		Patch: &Patch{
+			Images: c.StringSlice("patch.images"),
+		},
+		// status configuration
+		Status: &Status{
+			Resources: c.StringSlice("status.resources"),
+			Timeout:   c.Duration("status.timeout"),
 		},
 	}
 
