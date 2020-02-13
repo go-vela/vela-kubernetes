@@ -17,8 +17,8 @@ type Apply struct {
 	Files []string
 }
 
-// Command formats and outputs the Apply command from the
-// provided configuration to apply to resources.
+// Command formats and outputs the Apply command from
+// the provided configuration to apply to resources.
 func (a *Apply) Command(c *Config, file string) *exec.Cmd {
 	logrus.Trace("creating kubectl apply command from plugin configuration")
 
@@ -50,6 +50,26 @@ func (a *Apply) Command(c *Config, file string) *exec.Cmd {
 	flags = append(flags, "--output=json")
 
 	return exec.Command(kubectlBin, flags...)
+}
+
+// Exec formats and runs the commands for applying
+// the provided configuration to the resources.
+func (a *Apply) Exec(c *Config) error {
+	logrus.Debug("running apply with provided configuration")
+
+	// iterate through all files to apply
+	for _, file := range a.Files {
+		// create the apply command for the file
+		cmd := a.Command(c, file)
+
+		// run the apply command for the file
+		err := execCmd(cmd)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 // Validate verifies the Apply is properly configured.

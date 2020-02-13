@@ -25,7 +25,7 @@ jobs:
         go build -a \
           -ldflags '-s -w -extldflags "-static"' \
           -o release/vela-kubernetes \
-          github.com/go-vela/vela-kubernetes/cmd/vela-artifactory
+          github.com/go-vela/vela-kubernetes/cmd/vela-kubernetes
 
     - name: publish
       uses: elgohr/Publish-Docker-Github-Action@master

@@ -41,6 +41,24 @@ func TestKubernetes_Apply_Command(t *testing.T) {
 	}
 }
 
+func TestKubernetes_Apply_Exec_Error(t *testing.T) {
+	// setup types
+	c := &Config{
+		File:      "file",
+		Context:   "context",
+		Namespace: "namespace",
+	}
+
+	a := &Apply{
+		Files: []string{"apply.yml"},
+	}
+
+	err := a.Exec(c)
+	if err == nil {
+		t.Errorf("Exec should have returned err")
+	}
+}
+
 func TestKubernetes_Apply_Validate(t *testing.T) {
 	// setup types
 	a := &Apply{
