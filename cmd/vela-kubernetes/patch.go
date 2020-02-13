@@ -20,7 +20,7 @@ type Patch struct {
 // Command formats and outputs the Patch command from
 // the provided configuration to patch resources.
 func (p *Patch) Command(c *Config, image string) *exec.Cmd {
-	logrus.Trace("creating kubectl patch command from plugin configuration")
+	logrus.Tracef("creating kubectl patch command for %s from plugin configuration", image)
 
 	// variable to store flags for command
 	var flags []string
@@ -37,7 +37,7 @@ func (p *Patch) Command(c *Config, image string) *exec.Cmd {
 		flags = append(flags, fmt.Sprintf("--context=%s", c.Context))
 	}
 
-	// add flag for apply kubectl command
+	// add flag for patch kubectl command
 	flags = append(flags, "patch")
 
 	// add flag for output
