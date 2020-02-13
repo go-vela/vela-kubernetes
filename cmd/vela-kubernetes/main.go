@@ -75,9 +75,9 @@ func main() {
 		// Patch Flags
 
 		cli.StringFlag{
-			EnvVar: "PARAMETER_IMAGES,PATCH_IMAGES",
-			Name:   "patch.images",
-			Usage:  "container images from files to patch",
+			EnvVar: "PARAMETER_CONTAINERS,PATCH_CONTAINERS",
+			Name:   "patch.containers",
+			Usage:  "containers from files to patch",
 		},
 
 		// Status Flags
@@ -143,7 +143,7 @@ func run(c *cli.Context) error {
 		},
 		// patch configuration
 		Patch: &Patch{
-			Images: c.StringSlice("patch.images"),
+			RawContainers: c.String("patch.containers"),
 		},
 		// status configuration
 		Status: &Status{
