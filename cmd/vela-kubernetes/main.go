@@ -53,6 +53,12 @@ func main() {
 			Name:   "apply.files",
 			Usage:  "kubernetes files or directories to apply",
 		},
+		cli.StringFlag{
+			EnvVar: "PARAMETER_OUTPUT,APPLY_OUTPUT",
+			Name:   "apply.output",
+			Usage:  "set output for apply - options: (json|yaml|wide)",
+			Value:  "json",
+		},
 
 		// Config Flags
 
@@ -78,6 +84,12 @@ func main() {
 			EnvVar: "PARAMETER_CONTAINERS,PATCH_CONTAINERS",
 			Name:   "patch.containers",
 			Usage:  "containers from files to patch",
+		},
+		cli.StringFlag{
+			EnvVar: "PARAMETER_OUTPUT,PATCH_OUTPUT",
+			Name:   "patch.output",
+			Usage:  "set output for patch - options: (json|yaml|wide)",
+			Value:  "json",
 		},
 
 		// Status Flags
@@ -133,7 +145,8 @@ func run(c *cli.Context) error {
 	p := &Plugin{
 		// apply configuration
 		Apply: &Apply{
-			Files: c.StringSlice("apply.files"),
+			Files:  c.StringSlice("apply.files"),
+			Output: c.String("apply.output"),
 		},
 		// config configuration
 		Config: &Config{
@@ -143,6 +156,7 @@ func run(c *cli.Context) error {
 		},
 		// patch configuration
 		Patch: &Patch{
+			Output:        c.String("patch.output"),
 			RawContainers: c.String("patch.containers"),
 		},
 		// status configuration

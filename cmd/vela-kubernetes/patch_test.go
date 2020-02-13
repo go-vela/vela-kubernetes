@@ -26,6 +26,7 @@ func TestKubernetes_Patch_Command(t *testing.T) {
 				Image: "alpine",
 			},
 		},
+		Output:        "json",
 		RawContainers: `[{"name": "container", "image": "alpine"}]`,
 	}
 
@@ -35,7 +36,7 @@ func TestKubernetes_Patch_Command(t *testing.T) {
 			fmt.Sprintf("--namespace=%s", c.Namespace),
 			fmt.Sprintf("--context=%s", c.Context),
 			"patch",
-			"--output=json",
+			fmt.Sprintf("--output=%s", p.Output),
 		)
 
 		got := p.Command(c, container)
@@ -61,6 +62,7 @@ func TestKubernetes_Patch_Exec_Error(t *testing.T) {
 				Image: "alpine",
 			},
 		},
+		Output:        "json",
 		RawContainers: `[{"name": "container", "image": "alpine"}]`,
 	}
 
@@ -73,6 +75,7 @@ func TestKubernetes_Patch_Exec_Error(t *testing.T) {
 func TestKubernetes_Patch_Validate(t *testing.T) {
 	// setup types
 	p := &Patch{
+		Output:        "json",
 		RawContainers: `[{"name": "container", "image": "alpine"}]`,
 	}
 
@@ -85,6 +88,7 @@ func TestKubernetes_Patch_Validate(t *testing.T) {
 func TestKubernetes_Patch_Validate_Invalid(t *testing.T) {
 	// setup types
 	p := &Patch{
+		Output:        "json",
 		RawContainers: "!@#$%^&*()",
 	}
 
@@ -107,6 +111,7 @@ func TestKubernetes_Patch_Validate_NoContainers(t *testing.T) {
 func TestKubernetes_Patch_Validate_NoContainerName(t *testing.T) {
 	// setup types
 	p := &Patch{
+		Output:        "json",
 		RawContainers: `[{"image": "alpine"}]`,
 	}
 
@@ -119,6 +124,7 @@ func TestKubernetes_Patch_Validate_NoContainerName(t *testing.T) {
 func TestKubernetes_Patch_Validate_NoContainerImage(t *testing.T) {
 	// setup types
 	p := &Patch{
+		Output:        "json",
 		RawContainers: `[{"name": "container"}]`,
 	}
 
