@@ -23,18 +23,38 @@ func TestKubernetes_Patch_Command(t *testing.T) {
 		Images: []string{"images"},
 	}
 
-	want := exec.Command(
-		kubectlBin,
-		fmt.Sprintf("--namespace=%s", c.Namespace),
-		fmt.Sprintf("--context=%s", c.Context),
-		"patch",
-		"--output=json",
-	)
+	for _, image := range p.Images {
+		want := exec.Command(
+			kubectlBin,
+			fmt.Sprintf("--namespace=%s", c.Namespace),
+			fmt.Sprintf("--context=%s", c.Context),
+			"patch",
+			"--output=json",
+		)
 
-	got := p.Command(c)
+		got := p.Command(c, image)
 
-	if !reflect.DeepEqual(got, want) {
-		t.Errorf("Command is %v, want %v", got, want)
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("Command is %v, want %v", got, want)
+		}
+	}
+}
+
+func TestKubernetes_Patch_Exec_Error(t *testing.T) {
+	// setup types
+	c := &Config{
+		File:      "file",
+		Context:   "context",
+		Namespace: "namespace",
+	}
+
+	p := &Patch{
+		Images: []string{"images"},
+	}
+
+	err := p.Exec(c)
+	if err == nil {
+		t.Errorf("Exec should have returned err")
 	}
 }
 

@@ -17,9 +17,9 @@ type Patch struct {
 	Images []string
 }
 
-// Command formats and outputs the Patch command from the
-// provided configuration to patch resources.
-func (p *Patch) Command(c *Config) *exec.Cmd {
+// Command formats and outputs the Patch command from
+// the provided configuration to patch resources.
+func (p *Patch) Command(c *Config, image string) *exec.Cmd {
 	logrus.Trace("creating kubectl patch command from plugin configuration")
 
 	// variable to store flags for command
@@ -44,6 +44,26 @@ func (p *Patch) Command(c *Config) *exec.Cmd {
 	flags = append(flags, "--output=json")
 
 	return exec.Command(kubectlBin, flags...)
+}
+
+// Exec formats and runs the commands for patching
+// the provided configuration to the resources.
+func (p *Patch) Exec(c *Config) error {
+	logrus.Debug("running patch with provided configuration")
+
+	// iterate through all images to patch
+	for _, image := range p.Images {
+		// create the patch command for the image
+		cmd := p.Command(c, image)
+
+		// run the patch command for the image
+		err := execCmd(cmd)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 // Validate verifies the Patch is properly configured.
