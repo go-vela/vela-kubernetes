@@ -97,10 +97,12 @@ func (c *Container) Validate() error {
 
 // Patch represents the plugin configuration for Patch config information.
 type Patch struct {
-	// raw input of containers provided for plugin
-	RawContainers string
 	// container images from files to patch
 	Containers []*Container
+	// sets the output for the patch command
+	Output string
+	// raw input of containers provided for plugin
+	RawContainers string
 }
 
 // Command formats and outputs the Patch command from
@@ -126,8 +128,11 @@ func (p *Patch) Command(c *Config, container *Container) *exec.Cmd {
 	// add flag for patch kubectl command
 	flags = append(flags, "patch")
 
-	// add flag for output
-	flags = append(flags, "--output=json")
+	// check if patch output is provided
+	if len(p.Output) > 0 {
+		// add flag for output from provided patch output
+		flags = append(flags, fmt.Sprintf("--output=%s", p.Output))
+	}
 
 	return exec.Command(kubectlBin, flags...)
 }

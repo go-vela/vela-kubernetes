@@ -15,6 +15,8 @@ import (
 type Apply struct {
 	// Kubernetes files or directories to apply
 	Files []string
+	// sets the output for the apply command
+	Output string
 }
 
 // Command formats and outputs the Apply command from
@@ -46,8 +48,11 @@ func (a *Apply) Command(c *Config, file string) *exec.Cmd {
 		flags = append(flags, fmt.Sprintf("--filename=%s", file))
 	}
 
-	// add flag for output
-	flags = append(flags, "--output=json")
+	// check if apply output is provided
+	if len(a.Output) > 0 {
+		// add flag for output from provided apply output
+		flags = append(flags, fmt.Sprintf("--output=%s", a.Output))
+	}
 
 	return exec.Command(kubectlBin, flags...)
 }

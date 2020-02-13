@@ -20,7 +20,8 @@ func TestKubernetes_Apply_Command(t *testing.T) {
 	}
 
 	a := &Apply{
-		Files: []string{"apply.yml"},
+		Files:  []string{"apply.yml"},
+		Output: "json",
 	}
 
 	for _, file := range a.Files {
@@ -30,7 +31,7 @@ func TestKubernetes_Apply_Command(t *testing.T) {
 			fmt.Sprintf("--context=%s", c.Context),
 			"apply",
 			fmt.Sprintf("--filename=%s", file),
-			"--output=json",
+			fmt.Sprintf("--output=%s", a.Output),
 		)
 
 		got := a.Command(c, file)
@@ -50,7 +51,8 @@ func TestKubernetes_Apply_Exec_Error(t *testing.T) {
 	}
 
 	a := &Apply{
-		Files: []string{"apply.yml"},
+		Files:  []string{"apply.yml"},
+		Output: "json",
 	}
 
 	err := a.Exec(c)
@@ -62,7 +64,8 @@ func TestKubernetes_Apply_Exec_Error(t *testing.T) {
 func TestKubernetes_Apply_Validate(t *testing.T) {
 	// setup types
 	a := &Apply{
-		Files: []string{"apply.yml"},
+		Files:  []string{"apply.yml"},
+		Output: "json",
 	}
 
 	err := a.Validate()
@@ -73,7 +76,9 @@ func TestKubernetes_Apply_Validate(t *testing.T) {
 
 func TestKubernetes_Apply_Validate_NoFiles(t *testing.T) {
 	// setup types
-	a := &Apply{}
+	a := &Apply{
+		Output: "json",
+	}
 
 	err := a.Validate()
 	if err == nil {
