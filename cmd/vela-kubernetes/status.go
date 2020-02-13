@@ -61,6 +61,26 @@ func (s *Status) Command(c *Config, resource string) *exec.Cmd {
 	return exec.Command(kubectlBin, flags...)
 }
 
+// Exec formats and runs the commands for watching the
+// status on resources from the provided configuration.
+func (s *Status) Exec(c *Config) error {
+	logrus.Debug("running status with provided configuration")
+
+	// iterate through all resources to watch status
+	for _, resource := range s.Resources {
+		// create the status command for the resource
+		cmd := s.Command(c, resource)
+
+		// run the status command for the resource
+		err := execCmd(cmd)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
 // Validate verifies the Status is properly configured.
 func (s *Status) Validate() error {
 	logrus.Trace("validating status configuration")

@@ -45,6 +45,25 @@ func TestKubernetes_Status_Command(t *testing.T) {
 	}
 }
 
+func TestKubernetes_Status_Exec_Error(t *testing.T) {
+	// setup types
+	c := &Config{
+		File:      "file",
+		Context:   "context",
+		Namespace: "namespace",
+	}
+
+	s := &Status{
+		Resources: []string{"resources"},
+		Timeout:   5 * time.Minute,
+	}
+
+	err := s.Exec(c)
+	if err == nil {
+		t.Errorf("Exec should have returned err")
+	}
+}
+
 func TestKubernetes_Status_Validate(t *testing.T) {
 	// setup types
 	s := &Status{
