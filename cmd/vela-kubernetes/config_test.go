@@ -12,7 +12,7 @@ import (
 
 func TestKubernetes_Config_Validate(t *testing.T) {
 	// setup types
-	c := Config{
+	c := &Config{
 		File:      "file",
 		Context:   "context",
 		Namespace: "namespace",
@@ -26,7 +26,7 @@ func TestKubernetes_Config_Validate(t *testing.T) {
 
 func TestKubernetes_Config_Validate_NoFile(t *testing.T) {
 	// setup types
-	c := Config{
+	c := &Config{
 		Context:   "context",
 		Namespace: "namespace",
 	}
@@ -39,7 +39,7 @@ func TestKubernetes_Config_Validate_NoFile(t *testing.T) {
 
 func TestKubernetes_Config_Validate_NoContext(t *testing.T) {
 	// setup types
-	c := Config{
+	c := &Config{
 		File:      "file",
 		Namespace: "namespace",
 	}
@@ -52,7 +52,7 @@ func TestKubernetes_Config_Validate_NoContext(t *testing.T) {
 
 func TestKubernetes_Config_Validate_NoNamespace(t *testing.T) {
 	// setup types
-	c := Config{
+	c := &Config{
 		File:    "file",
 		Context: "context",
 	}
@@ -63,12 +63,12 @@ func TestKubernetes_Config_Validate_NoNamespace(t *testing.T) {
 	}
 }
 
-func TestKubernetes_Kubernetes_Write(t *testing.T) {
+func TestKubernetes_Config_Write(t *testing.T) {
 	// setup filesystem
 	appFS = afero.NewMemMapFs()
 
 	// setup types
-	c := Config{
+	c := &Config{
 		File:      "file",
 		Context:   "context",
 		Namespace: "namespace",
@@ -80,12 +80,12 @@ func TestKubernetes_Kubernetes_Write(t *testing.T) {
 	}
 }
 
-func TestKubernetes_Kubernetes_Write_NoFile(t *testing.T) {
+func TestKubernetes_Config_Write_NoFile(t *testing.T) {
 	// setup filesystem
 	appFS = afero.NewMemMapFs()
 
 	// setup types
-	c := Config{
+	c := &Config{
 		Context:   "context",
 		Namespace: "namespace",
 	}
