@@ -31,7 +31,13 @@ func TestKubernetes_Plugin_Validate(t *testing.T) {
 			Namespace: "namespace",
 		},
 		Patch: &Patch{
-			Images: []string{"images"},
+			Containers: []*Container{
+				{
+					Name:  "container",
+					Image: "alpine",
+				},
+			},
+			RawContainers: `[{"name": "container", "image": "alpine"}]`,
 		},
 		Status: &Status{
 			Resources: []string{"resources"},
@@ -55,7 +61,13 @@ func TestKubernetes_Plugin_Validate_NoApply(t *testing.T) {
 			Namespace: "namespace",
 		},
 		Patch: &Patch{
-			Images: []string{"images"},
+			Containers: []*Container{
+				{
+					Name:  "container",
+					Image: "alpine",
+				},
+			},
+			RawContainers: `[{"name": "container", "image": "alpine"}]`,
 		},
 		Status: &Status{
 			Resources: []string{"resources"},
@@ -77,7 +89,13 @@ func TestKubernetes_Plugin_Validate_NoConfig(t *testing.T) {
 		},
 		Config: &Config{},
 		Patch: &Patch{
-			Images: []string{"images"},
+			Containers: []*Container{
+				{
+					Name:  "container",
+					Image: "alpine",
+				},
+			},
+			RawContainers: `[{"name": "container", "image": "alpine"}]`,
 		},
 		Status: &Status{
 			Resources: []string{"resources"},
@@ -127,7 +145,13 @@ func TestKubernetes_Plugin_Validate_NoStatus(t *testing.T) {
 			Namespace: "namespace",
 		},
 		Patch: &Patch{
-			Images: []string{"images"},
+			Containers: []*Container{
+				{
+					Name:  "container",
+					Image: "alpine",
+				},
+			},
+			RawContainers: `[{"name": "container", "image": "alpine"}]`,
 		},
 		Status: &Status{},
 	}
