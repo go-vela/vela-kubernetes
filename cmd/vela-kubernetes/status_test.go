@@ -23,6 +23,7 @@ func TestKubernetes_Status_Command(t *testing.T) {
 	s := &Status{
 		Resources: []string{"resources"},
 		Timeout:   5 * time.Minute,
+		Watch:     true,
 	}
 
 	for _, resource := range s.Resources {
@@ -56,6 +57,7 @@ func TestKubernetes_Status_Exec_Error(t *testing.T) {
 	s := &Status{
 		Resources: []string{"resources"},
 		Timeout:   5 * time.Minute,
+		Watch:     true,
 	}
 
 	err := s.Exec(c)
@@ -69,6 +71,7 @@ func TestKubernetes_Status_Validate(t *testing.T) {
 	s := &Status{
 		Resources: []string{"resources"},
 		Timeout:   5 * time.Minute,
+		Watch:     true,
 	}
 
 	err := s.Validate()
@@ -81,6 +84,7 @@ func TestKubernetes_Status_Validate_NoResources(t *testing.T) {
 	// setup types
 	s := &Status{
 		Timeout: 5 * time.Minute,
+		Watch:   true,
 	}
 
 	err := s.Validate()
@@ -93,6 +97,7 @@ func TestKubernetes_Status_Validate_NoTimeout(t *testing.T) {
 	// setup types
 	s := &Status{
 		Resources: []string{"resources"},
+		Watch:     true,
 	}
 
 	err := s.Validate()
