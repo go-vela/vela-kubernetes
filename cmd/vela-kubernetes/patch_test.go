@@ -98,7 +98,7 @@ func TestKubernetes_Patch_Validate_Invalid(t *testing.T) {
 	}
 }
 
-func TestKubernetes_Patch_Validate_NoContainers(t *testing.T) {
+func TestKubernetes_Patch_Validate_NoRawContainers(t *testing.T) {
 	// setup types
 	p := &Patch{}
 
@@ -108,24 +108,11 @@ func TestKubernetes_Patch_Validate_NoContainers(t *testing.T) {
 	}
 }
 
-func TestKubernetes_Patch_Validate_NoContainerName(t *testing.T) {
+func TestKubernetes_Patch_Validate_NoRawContainerName(t *testing.T) {
 	// setup types
 	p := &Patch{
 		Output:        "json",
 		RawContainers: `[{"image": "alpine"}]`,
-	}
-
-	err := p.Validate()
-	if err == nil {
-		t.Errorf("Validate should have returned err")
-	}
-}
-
-func TestKubernetes_Patch_Validate_NoContainerImage(t *testing.T) {
-	// setup types
-	p := &Patch{
-		Output:        "json",
-		RawContainers: `[{"name": "container"}]`,
 	}
 
 	err := p.Validate()
