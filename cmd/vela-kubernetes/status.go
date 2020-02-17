@@ -18,6 +18,8 @@ type Status struct {
 	Resources []string
 	// total time allowed to watch Kubernetes resources
 	Timeout time.Duration
+	// enables watching the status until the rollout completes
+	Watch bool
 }
 
 // Command formats and outputs the Status command from the
@@ -56,7 +58,7 @@ func (s *Status) Command(c *Config, resource string) *exec.Cmd {
 	}
 
 	// add flag for watching status of rollout until it finishes
-	flags = append(flags, "--watch=true")
+	flags = append(flags, fmt.Sprintf("--watch=%v", s.Watch))
 
 	return exec.Command(kubectlBin, flags...)
 }
