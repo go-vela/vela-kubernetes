@@ -15,6 +15,7 @@ func TestKubernetes_Patch_Command(t *testing.T) {
 	// setup types
 	c := &Config{
 		File:      "file",
+		Cluster:   "cluster",
 		Context:   "context",
 		Namespace: "namespace",
 	}
@@ -34,6 +35,7 @@ func TestKubernetes_Patch_Command(t *testing.T) {
 		want := exec.Command(
 			kubectlBin,
 			fmt.Sprintf("--namespace=%s", c.Namespace),
+			fmt.Sprintf("--cluster=%s", c.Cluster),
 			fmt.Sprintf("--context=%s", c.Context),
 			"patch",
 			fmt.Sprintf("--output=%s", p.Output),
@@ -51,6 +53,7 @@ func TestKubernetes_Patch_Exec_Error(t *testing.T) {
 	// setup types
 	c := &Config{
 		File:      "file",
+		Cluster:   "cluster",
 		Context:   "context",
 		Namespace: "namespace",
 	}

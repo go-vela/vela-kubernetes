@@ -16,6 +16,7 @@ func TestKubernetes_Status_Command(t *testing.T) {
 	// setup types
 	c := &Config{
 		File:      "file",
+		Cluster:   "cluster",
 		Context:   "context",
 		Namespace: "namespace",
 	}
@@ -30,6 +31,7 @@ func TestKubernetes_Status_Command(t *testing.T) {
 		want := exec.Command(
 			kubectlBin,
 			fmt.Sprintf("--namespace=%s", c.Namespace),
+			fmt.Sprintf("--cluster=%s", c.Cluster),
 			fmt.Sprintf("--context=%s", c.Context),
 			"rollout",
 			"status",
@@ -50,6 +52,7 @@ func TestKubernetes_Status_Exec_Error(t *testing.T) {
 	// setup types
 	c := &Config{
 		File:      "file",
+		Cluster:   "cluster",
 		Context:   "context",
 		Namespace: "namespace",
 	}

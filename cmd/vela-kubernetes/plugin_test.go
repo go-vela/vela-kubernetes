@@ -23,10 +23,12 @@ func TestKubernetes_Plugin_Validate(t *testing.T) {
 	// setup types
 	p := &Plugin{
 		Apply: &Apply{
-			Files: []string{"files"},
+			Files:  []string{"apply.yml"},
+			Output: "json",
 		},
 		Config: &Config{
 			File:      "file",
+			Cluster:   "cluster",
 			Context:   "context",
 			Namespace: "namespace",
 		},
@@ -37,6 +39,7 @@ func TestKubernetes_Plugin_Validate(t *testing.T) {
 					Image: "alpine",
 				},
 			},
+			Output:        "json",
 			RawContainers: `[{"name": "container", "image": "alpine"}]`,
 		},
 		Status: &Status{
@@ -57,6 +60,7 @@ func TestKubernetes_Plugin_Validate_NoApply(t *testing.T) {
 		Apply: &Apply{},
 		Config: &Config{
 			File:      "file",
+			Cluster:   "cluster",
 			Context:   "context",
 			Namespace: "namespace",
 		},
@@ -67,6 +71,7 @@ func TestKubernetes_Plugin_Validate_NoApply(t *testing.T) {
 					Image: "alpine",
 				},
 			},
+			Output:        "json",
 			RawContainers: `[{"name": "container", "image": "alpine"}]`,
 		},
 		Status: &Status{
@@ -85,7 +90,8 @@ func TestKubernetes_Plugin_Validate_NoConfig(t *testing.T) {
 	// setup types
 	p := &Plugin{
 		Apply: &Apply{
-			Files: []string{"files"},
+			Files:  []string{"apply.yml"},
+			Output: "json",
 		},
 		Config: &Config{},
 		Patch: &Patch{
@@ -95,6 +101,7 @@ func TestKubernetes_Plugin_Validate_NoConfig(t *testing.T) {
 					Image: "alpine",
 				},
 			},
+			Output:        "json",
 			RawContainers: `[{"name": "container", "image": "alpine"}]`,
 		},
 		Status: &Status{
@@ -113,10 +120,12 @@ func TestKubernetes_Plugin_Validate_NoPatch(t *testing.T) {
 	// setup types
 	p := &Plugin{
 		Apply: &Apply{
-			Files: []string{"files"},
+			Files:  []string{"apply.yml"},
+			Output: "json",
 		},
 		Config: &Config{
 			File:      "file",
+			Cluster:   "cluster",
 			Context:   "context",
 			Namespace: "namespace",
 		},
@@ -137,10 +146,11 @@ func TestKubernetes_Plugin_Validate_NoStatus(t *testing.T) {
 	// setup types
 	p := &Plugin{
 		Apply: &Apply{
-			Files: []string{"files"},
+			Files: []string{"apply.yml"},
 		},
 		Config: &Config{
 			File:      "file",
+			Cluster:   "cluster",
 			Context:   "context",
 			Namespace: "namespace",
 		},
@@ -151,6 +161,7 @@ func TestKubernetes_Plugin_Validate_NoStatus(t *testing.T) {
 					Image: "alpine",
 				},
 			},
+			Output:        "json",
 			RawContainers: `[{"name": "container", "image": "alpine"}]`,
 		},
 		Status: &Status{},
