@@ -7,15 +7,45 @@ package main
 import (
 	"testing"
 	"time"
+
+	"github.com/spf13/afero"
 )
 
-func TestKubernetes_Plugin_Exec(t *testing.T) {
+func TestKubernetes_Plugin_Exec_Error(t *testing.T) {
+	// setup filesystem
+	appFS = afero.NewMemMapFs()
+
 	// setup types
-	p := &Plugin{}
+	p := &Plugin{
+		Apply: &Apply{
+			Files:  []string{"apply.yml"},
+			Output: "json",
+		},
+		Config: &Config{
+			File:      "file",
+			Cluster:   "cluster",
+			Context:   "context",
+			Namespace: "namespace",
+		},
+		Patch: &Patch{
+			Containers: []*Container{
+				{
+					Name:  "container",
+					Image: "alpine",
+				},
+			},
+			Output:        "json",
+			RawContainers: `[{"name": "container", "image": "alpine"}]`,
+		},
+		Status: &Status{
+			Resources: []string{"resources"},
+			Timeout:   5 * time.Minute,
+		},
+	}
 
 	err := p.Exec()
-	if err != nil {
-		t.Errorf("Exec returned err: %v", err)
+	if err == nil {
+		t.Errorf("Exec should have returned err")
 	}
 }
 
