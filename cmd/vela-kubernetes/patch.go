@@ -86,6 +86,12 @@ func (p *Patch) Command(c *Config, container *Container) *exec.Cmd {
 		flags = append(flags, fmt.Sprintf("--namespace=%s", c.Namespace))
 	}
 
+	// check if config cluster is provided
+	if len(c.Cluster) > 0 {
+		// add flag for cluster from provided config cluster
+		flags = append(flags, fmt.Sprintf("--cluster=%s", c.Cluster))
+	}
+
 	// check if config context is provided
 	if len(c.Context) > 0 {
 		// add flag for context from provided config context

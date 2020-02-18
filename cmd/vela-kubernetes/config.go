@@ -20,9 +20,11 @@ var appFS = afero.NewOsFs()
 type Config struct {
 	// cluster configuration file to interact with Kubernetes
 	File string
-	// cluster context to use for interactions with Kubernetes
+	// name of the configuration cluster to use for interactions with Kubernetes
+	Cluster string
+	// name of the configuration context to use for interactions with Kubernetes
 	Context string
-	// cluster namespace to use for interactions with Kubernetes
+	// name of the configuration namespace to use for interactions with Kubernetes
 	Namespace string
 }
 
@@ -33,6 +35,11 @@ func (c *Config) Validate() error {
 	// verify file is provided
 	if len(c.File) == 0 {
 		return fmt.Errorf("no config file provided")
+	}
+
+	// verify cluster is provided
+	if len(c.Cluster) == 0 {
+		return fmt.Errorf("no config cluster provided")
 	}
 
 	// verify context is provided
