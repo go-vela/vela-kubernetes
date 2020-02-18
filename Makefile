@@ -42,9 +42,22 @@ docker-build:
 docker-run:
 
 	docker run --rm \
+		-e KUBE_CONFIG \
+		-e PARAMETER_CLUSTER \
+		-e PARAMETER_CONTEXT \
+		-e PARAMETER_NAMESPACE \
+		-e PARAMETER_LOG_LEVEL \
+		-e PARAMETER_FILES \
+		-e PARAMETER_CONTAINERS \
+		-e PARAMETER_OUTPUT \
+		-e PARAMETER_STATUSES \
+		-e PARAMETER_TIMEOUT \
+		-e PARAMETER_WATCH \
 		vela-kubernetes:local
 
 docker-example:
 
 	docker run --rm \
+		-e KUBE_CONFIG \
+		-e PARAMETER_FILES \
 		vela-kubernetes:local
