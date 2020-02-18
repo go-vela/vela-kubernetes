@@ -9,6 +9,7 @@
 # - .cluster:    (default: "")
 # - .context:    (default: "")
 # - .namespace:  (default: "")
+# - .dry_run:    (default: false)
 # - .files:      (default: "[]")
 # - .containers: (default: "{}")
 # - .output:     (default: "json")
@@ -28,6 +29,7 @@ steps:
       cluster: {{ default "" .cluster }}
       context: {{ default "" .context }}
       namespace: {{ default "" .namespace }}
+      dry_run: {{ default "false" .dry_run }}
       files: {{ default "[]" .files }}
       containers: {{ default "{}" .containers }}
       output: {{ default "json" .output }}

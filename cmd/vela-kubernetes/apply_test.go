@@ -21,6 +21,7 @@ func TestKubernetes_Apply_Command(t *testing.T) {
 	}
 
 	a := &Apply{
+		DryRun: false,
 		Files:  []string{"apply.yml"},
 		Output: "json",
 	}
@@ -32,6 +33,7 @@ func TestKubernetes_Apply_Command(t *testing.T) {
 			fmt.Sprintf("--cluster=%s", c.Cluster),
 			fmt.Sprintf("--context=%s", c.Context),
 			"apply",
+			fmt.Sprintf("--dry-run=%t", a.DryRun),
 			fmt.Sprintf("--filename=%s", file),
 			fmt.Sprintf("--output=%s", a.Output),
 		)
@@ -54,6 +56,7 @@ func TestKubernetes_Apply_Exec_Error(t *testing.T) {
 	}
 
 	a := &Apply{
+		DryRun: false,
 		Files:  []string{"apply.yml"},
 		Output: "json",
 	}
@@ -67,6 +70,7 @@ func TestKubernetes_Apply_Exec_Error(t *testing.T) {
 func TestKubernetes_Apply_Validate(t *testing.T) {
 	// setup types
 	a := &Apply{
+		DryRun: false,
 		Files:  []string{"apply.yml"},
 		Output: "json",
 	}
@@ -80,6 +84,7 @@ func TestKubernetes_Apply_Validate(t *testing.T) {
 func TestKubernetes_Apply_Validate_NoFiles(t *testing.T) {
 	// setup types
 	a := &Apply{
+		DryRun: false,
 		Output: "json",
 	}
 

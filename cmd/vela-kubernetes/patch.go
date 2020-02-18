@@ -66,6 +66,8 @@ spec:
 type Patch struct {
 	// container images from files to patch
 	Containers []*Container
+	// enables pretending to patch the containers from the files
+	DryRun bool
 	// sets the output for the patch command
 	Output string
 	// raw input of containers provided for plugin
@@ -100,6 +102,9 @@ func (p *Patch) Command(c *Config, container *Container) *exec.Cmd {
 
 	// add flag for patch kubectl command
 	flags = append(flags, "patch")
+
+	// add flag for dry run mode
+	flags = append(flags, fmt.Sprintf("--local=%t", p.DryRun))
 
 	// check if patch output is provided
 	if len(p.Output) > 0 {
