@@ -24,6 +24,30 @@ type Plugin struct {
 func (p *Plugin) Exec() error {
 	logrus.Debug("running plugin with provided configuration")
 
+	// create kubectl configuration file for authentication
+	err := p.Config.Write()
+	if err != nil {
+		return err
+	}
+
+	// output kubectl version for troubleshooting
+	err = execCmd(versionCmd(p.Config))
+	if err != nil {
+		return err
+	}
+
+	// apply the Kubernetes resource files
+	err = p.Apply.Exec(p.Config)
+	if err != nil {
+		return err
+	}
+
+	// watch the status for the specified resources
+	err = p.Status.Exec(p.Config)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
