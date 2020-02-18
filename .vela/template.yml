@@ -1,0 +1,36 @@
+# Copyright (c) 2020 Target Brands, Inc. All rights reserved.
+#
+# Use of this source code is governed by the LICENSE file in this repository.
+
+## Template Variables
+# - .image       (default: "target/vela-kubernetes:latest")
+# - .pull        (default: true)
+# - .log_level   (default: "info")
+# - .cluster:    (default: "")
+# - .context:    (default: "")
+# - .namespace:  (default: "")
+# - .files:      (default: "[]")
+# - .containers: (default: "{}")
+# - .output:     (default: "json")
+# - .resources:  (default: "[]")
+# - .timeout:    (default: "5m")
+# - .watch:      (default: true)
+
+metadata:
+  template: true
+
+steps:
+  - name: kubernetes_plugin_template
+    image: {{ default "target/vela-kubernetes:latest" .image }}
+    pull: {{ default "true" .pull }}
+    parameters:
+      log_level: {{ default "info" .log_level }}
+      cluster: {{ default "" .cluster }}
+      context: {{ default "" .context }}
+      namespace: {{ default "" .namespace }}
+      files: {{ default "[]" .files }}
+      containers: {{ default "{}" .containers }}
+      output: {{ default "json" .output }}
+      resources: {{ default "[]" .resources }}
+      timeout: {{ default "5m" .timeout }}
+      watch: {{ default "true" .watch }}
