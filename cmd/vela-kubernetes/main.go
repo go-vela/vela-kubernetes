@@ -65,17 +65,22 @@ func main() {
 		cli.StringFlag{
 			EnvVar: "PARAMETER_CONFIG,CONFIG_FILE,KUBE_CONFIG",
 			Name:   "config.file",
-			Usage:  "kubernetes cluster configuration",
+			Usage:  "kubectl configuration for interacting with Kubernetes",
+		},
+		cli.StringFlag{
+			EnvVar: "PARAMETER_CLUSTER,CONFIG_CLUSTER,KUBE_CLUSTER",
+			Name:   "config.cluster",
+			Usage:  "kubectl cluster for interacting with Kubernetes",
 		},
 		cli.StringFlag{
 			EnvVar: "PARAMETER_CONTEXT,CONFIG_CONTEXT,KUBE_CONTEXT",
 			Name:   "config.context",
-			Usage:  "kubernetes cluster context to interact with",
+			Usage:  "kubectl context for interacting with Kubernetes",
 		},
 		cli.StringFlag{
 			EnvVar: "PARAMETER_NAMESPACE,CONFIG_NAMESPACE,KUBE_NAMESPACE",
 			Name:   "config.namespace",
-			Usage:  "kubernetes cluster namespace to interact with",
+			Usage:  "kubectl namespace for interacting with Kubernetes",
 		},
 
 		// Patch Flags
@@ -156,6 +161,7 @@ func run(c *cli.Context) error {
 		// config configuration
 		Config: &Config{
 			File:      c.String("config.file"),
+			Cluster:   c.String("config.cluster"),
 			Context:   c.String("config.context"),
 			Namespace: c.String("config.namespace"),
 		},
