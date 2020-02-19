@@ -27,6 +27,7 @@ func TestKubernetes_Patch_Command(t *testing.T) {
 				Image: "alpine",
 			},
 		},
+		DryRun:        false,
 		Output:        "json",
 		RawContainers: `[{"name": "container", "image": "alpine"}]`,
 	}
@@ -38,6 +39,7 @@ func TestKubernetes_Patch_Command(t *testing.T) {
 			fmt.Sprintf("--cluster=%s", c.Cluster),
 			fmt.Sprintf("--context=%s", c.Context),
 			"patch",
+			fmt.Sprintf("--local=%t", p.DryRun),
 			fmt.Sprintf("--output=%s", p.Output),
 		)
 
@@ -65,6 +67,7 @@ func TestKubernetes_Patch_Exec_Error(t *testing.T) {
 				Image: "alpine",
 			},
 		},
+		DryRun:        false,
 		Output:        "json",
 		RawContainers: `[{"name": "container", "image": "alpine"}]`,
 	}
@@ -78,6 +81,7 @@ func TestKubernetes_Patch_Exec_Error(t *testing.T) {
 func TestKubernetes_Patch_Validate(t *testing.T) {
 	// setup types
 	p := &Patch{
+		DryRun:        false,
 		Output:        "json",
 		RawContainers: `[{"name": "container", "image": "alpine"}]`,
 	}
@@ -91,6 +95,7 @@ func TestKubernetes_Patch_Validate(t *testing.T) {
 func TestKubernetes_Patch_Validate_Invalid(t *testing.T) {
 	// setup types
 	p := &Patch{
+		DryRun:        false,
 		Output:        "json",
 		RawContainers: "!@#$%^&*()",
 	}
@@ -103,7 +108,10 @@ func TestKubernetes_Patch_Validate_Invalid(t *testing.T) {
 
 func TestKubernetes_Patch_Validate_NoRawContainers(t *testing.T) {
 	// setup types
-	p := &Patch{}
+	p := &Patch{
+		DryRun: false,
+		Output: "json",
+	}
 
 	err := p.Validate()
 	if err == nil {
@@ -114,6 +122,7 @@ func TestKubernetes_Patch_Validate_NoRawContainers(t *testing.T) {
 func TestKubernetes_Patch_Validate_NoRawContainerName(t *testing.T) {
 	// setup types
 	p := &Patch{
+		DryRun:        false,
 		Output:        "json",
 		RawContainers: `[{"image": "alpine"}]`,
 	}

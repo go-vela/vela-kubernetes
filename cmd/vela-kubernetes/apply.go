@@ -13,6 +13,8 @@ import (
 
 // Apply represents the plugin configuration for Apply config information.
 type Apply struct {
+	// enables pretending to apply the files
+	DryRun bool
 	// Kubernetes files or directories to apply
 	Files []string
 	// sets the output for the apply command
@@ -47,6 +49,9 @@ func (a *Apply) Command(c *Config, file string) *exec.Cmd {
 
 	// add flag for apply kubectl command
 	flags = append(flags, "apply")
+
+	// add flag for dry run mode
+	flags = append(flags, fmt.Sprintf("--dry-run=%t", a.DryRun))
 
 	// check if file is provided
 	if len(file) > 0 {

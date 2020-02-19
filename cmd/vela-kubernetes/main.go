@@ -48,6 +48,11 @@ func main() {
 
 		// Apply Flags
 
+		cli.BoolFlag{
+			EnvVar: "PARAMETER_DRY_RUN,APPLY_DRY_RUN",
+			Name:   "apply.dry_run",
+			Usage:  "enables pretending to apply the files",
+		},
 		cli.StringSliceFlag{
 			EnvVar: "PARAMETER_FILES,APPLY_FILES",
 			Name:   "apply.files",
@@ -89,6 +94,11 @@ func main() {
 			EnvVar: "PARAMETER_CONTAINERS,PATCH_CONTAINERS",
 			Name:   "patch.containers",
 			Usage:  "containers from files to patch",
+		},
+		cli.BoolFlag{
+			EnvVar: "PARAMETER_DRY_RUN,PATCH_DRY_RUN",
+			Name:   "patch.dry_run",
+			Usage:  "enables pretending to patch the containers",
 		},
 		cli.StringFlag{
 			EnvVar: "PARAMETER_OUTPUT,PATCH_OUTPUT",
@@ -155,6 +165,7 @@ func run(c *cli.Context) error {
 	p := &Plugin{
 		// apply configuration
 		Apply: &Apply{
+			DryRun: c.Bool("apply.dry_run"),
 			Files:  c.StringSlice("apply.files"),
 			Output: c.String("apply.output"),
 		},
@@ -167,6 +178,7 @@ func run(c *cli.Context) error {
 		},
 		// patch configuration
 		Patch: &Patch{
+			DryRun:        c.Bool("patch.dry_run"),
 			Output:        c.String("patch.output"),
 			RawContainers: c.String("patch.containers"),
 		},
