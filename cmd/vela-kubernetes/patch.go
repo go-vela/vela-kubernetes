@@ -62,6 +62,8 @@ type Patch struct {
 	Containers []*Container
 	// enables pretending to patch the containers from the files
 	DryRun bool
+	// Kubernetes files or directories to patch
+	Files []string
 	// sets the output for the patch command
 	Output string
 	// raw input of containers provided for plugin
@@ -70,7 +72,7 @@ type Patch struct {
 
 // Command formats and outputs the Patch command from
 // the provided configuration to patch resources.
-func (p *Patch) Command(c *Config, container *Container) *exec.Cmd {
+func (p *Patch) Command(c *Config, file string, container *Container) *exec.Cmd {
 	logrus.Tracef("creating kubectl patch command for %s from plugin configuration", container.Name)
 
 	// create pattern for patching containers
@@ -100,11 +102,14 @@ func (p *Patch) Command(c *Config, container *Container) *exec.Cmd {
 	// add flag for patch kubectl command
 	flags = append(flags, "patch")
 
+	// add flag for dry run from provided patch dry run
+	flags = append(flags, fmt.Sprintf("--local=%t", p.DryRun))
+
+	// add flag for file from provided patch file
+	flags = append(flags, fmt.Sprintf("--filename=%s", file))
+
 	// add flag for the patch to be made
 	flags = append(flags, fmt.Sprintf("--patch=%s", pattern))
-
-	// add flag for dry run mode
-	flags = append(flags, fmt.Sprintf("--local=%t", p.DryRun))
 
 	// check if patch output is provided
 	if len(p.Output) > 0 {
@@ -120,15 +125,18 @@ func (p *Patch) Command(c *Config, container *Container) *exec.Cmd {
 func (p *Patch) Exec(c *Config) error {
 	logrus.Debug("running patch with provided configuration")
 
-	// iterate through all images to patch
-	for _, container := range p.Containers {
-		// create the patch command for the image
-		cmd := p.Command(c, container)
+	// iterate through all files to patch
+	for _, file := range p.Files {
+		// iterate through all images to patch
+		for _, container := range p.Containers {
+			// create the patch command for the file from the image
+			cmd := p.Command(c, file, container)
 
-		// run the patch command for the image
-		err := execCmd(cmd)
-		if err != nil {
-			return err
+			// run the patch command for the image
+			err := execCmd(cmd)
+			if err != nil {
+				return err
+			}
 		}
 	}
 
@@ -155,6 +163,11 @@ func (p *Patch) Unmarshal() error {
 // Validate verifies the Patch is properly configured.
 func (p *Patch) Validate() error {
 	logrus.Trace("validating patch configuration")
+
+	// verify files are provided
+	if len(p.Files) == 0 {
+		return fmt.Errorf("no patch files provided")
+	}
 
 	// verify containers are provided
 	if len(p.RawContainers) == 0 {

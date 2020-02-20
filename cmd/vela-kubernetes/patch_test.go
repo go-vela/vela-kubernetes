@@ -28,28 +28,32 @@ func TestKubernetes_Patch_Command(t *testing.T) {
 			},
 		},
 		DryRun:        false,
+		Files:         []string{"patch.yml"},
 		Output:        "json",
 		RawContainers: `[{"name": "container", "image": "alpine"}]`,
 	}
 
-	for _, container := range p.Containers {
-		pattern := fmt.Sprintf(deploymentPatch, container.Name, container.Image)
+	for _, file := range p.Files {
+		for _, container := range p.Containers {
+			pattern := fmt.Sprintf(deploymentPatch, container.Name, container.Image)
 
-		want := exec.Command(
-			kubectlBin,
-			fmt.Sprintf("--namespace=%s", c.Namespace),
-			fmt.Sprintf("--cluster=%s", c.Cluster),
-			fmt.Sprintf("--context=%s", c.Context),
-			"patch",
-			fmt.Sprintf("--patch=%s", pattern),
-			fmt.Sprintf("--local=%t", p.DryRun),
-			fmt.Sprintf("--output=%s", p.Output),
-		)
+			want := exec.Command(
+				kubectlBin,
+				fmt.Sprintf("--namespace=%s", c.Namespace),
+				fmt.Sprintf("--cluster=%s", c.Cluster),
+				fmt.Sprintf("--context=%s", c.Context),
+				"patch",
+				fmt.Sprintf("--local=%t", p.DryRun),
+				fmt.Sprintf("--filename=%s", file),
+				fmt.Sprintf("--patch=%s", pattern),
+				fmt.Sprintf("--output=%s", p.Output),
+			)
 
-		got := p.Command(c, container)
+			got := p.Command(c, file, container)
 
-		if !reflect.DeepEqual(got, want) {
-			t.Errorf("Command is %v, want %v", got, want)
+			if !reflect.DeepEqual(got, want) {
+				t.Errorf("Command is %v, want %v", got, want)
+			}
 		}
 	}
 }
@@ -71,6 +75,7 @@ func TestKubernetes_Patch_Exec_Error(t *testing.T) {
 			},
 		},
 		DryRun:        false,
+		Files:         []string{"patch.yml"},
 		Output:        "json",
 		RawContainers: `[{"name": "container", "image": "alpine"}]`,
 	}
@@ -85,6 +90,7 @@ func TestKubernetes_Patch_Validate(t *testing.T) {
 	// setup types
 	p := &Patch{
 		DryRun:        false,
+		Files:         []string{"patch.yml"},
 		Output:        "json",
 		RawContainers: `[{"name": "container", "image": "alpine"}]`,
 	}
@@ -95,10 +101,25 @@ func TestKubernetes_Patch_Validate(t *testing.T) {
 	}
 }
 
+func TestKubernetes_Patch_Validate_NoFiles(t *testing.T) {
+	// setup types
+	p := &Patch{
+		DryRun:        false,
+		Output:        "json",
+		RawContainers: `[{"name": "container", "image": "alpine"}]`,
+	}
+
+	err := p.Validate()
+	if err == nil {
+		t.Errorf("Validate should have returned err")
+	}
+}
+
 func TestKubernetes_Patch_Validate_Invalid(t *testing.T) {
 	// setup types
 	p := &Patch{
 		DryRun:        false,
+		Files:         []string{"patch.yml"},
 		Output:        "json",
 		RawContainers: "!@#$%^&*()",
 	}
@@ -113,6 +134,7 @@ func TestKubernetes_Patch_Validate_NoRawContainers(t *testing.T) {
 	// setup types
 	p := &Patch{
 		DryRun: false,
+		Files:  []string{"patch.yml"},
 		Output: "json",
 	}
 
@@ -126,6 +148,7 @@ func TestKubernetes_Patch_Validate_NoRawContainerName(t *testing.T) {
 	// setup types
 	p := &Patch{
 		DryRun:        false,
+		Files:         []string{"patch.yml"},
 		Output:        "json",
 		RawContainers: `[{"image": "alpine"}]`,
 	}
