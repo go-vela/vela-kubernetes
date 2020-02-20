@@ -39,48 +39,6 @@ func TestKubernetes_Config_Validate_NoFile(t *testing.T) {
 	}
 }
 
-func TestKubernetes_Config_Validate_NoCluster(t *testing.T) {
-	// setup types
-	c := &Config{
-		File:      "file",
-		Context:   "context",
-		Namespace: "namespace",
-	}
-
-	err := c.Validate()
-	if err == nil {
-		t.Errorf("Validate should have returned err")
-	}
-}
-
-func TestKubernetes_Config_Validate_NoContext(t *testing.T) {
-	// setup types
-	c := &Config{
-		File:      "file",
-		Cluster:   "cluster",
-		Namespace: "namespace",
-	}
-
-	err := c.Validate()
-	if err == nil {
-		t.Errorf("Validate should have returned err")
-	}
-}
-
-func TestKubernetes_Config_Validate_NoNamespace(t *testing.T) {
-	// setup types
-	c := &Config{
-		File:    "file",
-		Cluster: "cluster",
-		Context: "context",
-	}
-
-	err := c.Validate()
-	if err == nil {
-		t.Errorf("Validate should have returned err")
-	}
-}
-
 func TestKubernetes_Config_Write(t *testing.T) {
 	// setup filesystem
 	appFS = afero.NewMemMapFs()
