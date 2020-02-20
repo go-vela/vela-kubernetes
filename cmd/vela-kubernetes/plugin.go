@@ -36,10 +36,19 @@ func (p *Plugin) Exec() error {
 		return err
 	}
 
-	// apply the Kubernetes resource files
-	err = p.Apply.Exec(p.Config)
-	if err != nil {
-		return err
+	// check if containers were provided to patch
+	if len(p.Patch.Containers) > 0 {
+		// patch the Kubernetes resource files
+		err = p.Patch.Exec(p.Config)
+		if err != nil {
+			return err
+		}
+	} else { // default back to apply if no containers to patch
+		// apply the Kubernetes resource files
+		err = p.Apply.Exec(p.Config)
+		if err != nil {
+			return err
+		}
 	}
 
 	// watch the status for the specified resources
@@ -55,22 +64,25 @@ func (p *Plugin) Exec() error {
 func (p *Plugin) Validate() error {
 	logrus.Debug("validating plugin configuration")
 
-	// validate apply configuration
-	err := p.Apply.Validate()
-	if err != nil {
-		return err
-	}
-
 	// validate config configuration
-	err = p.Config.Validate()
+	err := p.Config.Validate()
 	if err != nil {
 		return err
 	}
 
-	// validate patch configuration
-	err = p.Patch.Validate()
-	if err != nil {
-		return err
+	// check if containers were provided to patch
+	if len(p.Patch.RawContainers) > 0 {
+		// validate patch configuration
+		err = p.Patch.Validate()
+		if err != nil {
+			return err
+		}
+	} else { // default back to apply if no containers to patch
+		// validate apply configuration
+		err = p.Apply.Validate()
+		if err != nil {
+			return err
+		}
 	}
 
 	// validate status configuration

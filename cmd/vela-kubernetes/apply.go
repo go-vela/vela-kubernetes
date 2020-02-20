@@ -50,14 +50,11 @@ func (a *Apply) Command(c *Config, file string) *exec.Cmd {
 	// add flag for apply kubectl command
 	flags = append(flags, "apply")
 
-	// add flag for dry run mode
+	// add flag for dry run from provided apply dry run
 	flags = append(flags, fmt.Sprintf("--dry-run=%t", a.DryRun))
 
-	// check if file is provided
-	if len(file) > 0 {
-		// add flag for file from provided apply file
-		flags = append(flags, fmt.Sprintf("--filename=%s", file))
-	}
+	// add flag for file from provided apply file
+	flags = append(flags, fmt.Sprintf("--filename=%s", file))
 
 	// check if apply output is provided
 	if len(a.Output) > 0 {

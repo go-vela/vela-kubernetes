@@ -100,6 +100,11 @@ func main() {
 			Name:   "patch.dry_run",
 			Usage:  "enables pretending to patch the containers",
 		},
+		cli.StringSliceFlag{
+			EnvVar: "PARAMETER_FILES,PATCH_FILES",
+			Name:   "patch.files",
+			Usage:  "kubernetes files or directories to patch",
+		},
 		cli.StringFlag{
 			EnvVar: "PARAMETER_OUTPUT,PATCH_OUTPUT",
 			Name:   "patch.output",
@@ -179,6 +184,7 @@ func run(c *cli.Context) error {
 		// patch configuration
 		Patch: &Patch{
 			DryRun:        c.Bool("patch.dry_run"),
+			Files:         c.StringSlice("patch.files"),
 			Output:        c.String("patch.output"),
 			RawContainers: c.String("patch.containers"),
 		},

@@ -69,6 +69,7 @@ func TestKubernetes_Plugin_Validate(t *testing.T) {
 					Image: "alpine",
 				},
 			},
+			Files:         []string{"patch.yml"},
 			Output:        "json",
 			RawContainers: `[{"name": "container", "image": "alpine"}]`,
 		},
@@ -84,10 +85,12 @@ func TestKubernetes_Plugin_Validate(t *testing.T) {
 	}
 }
 
-func TestKubernetes_Plugin_Validate_NoApply(t *testing.T) {
+func TestKubernetes_Plugin_Validate_Invalid(t *testing.T) {
 	// setup types
 	p := &Plugin{
-		Apply: &Apply{},
+		Apply: &Apply{
+			Output: "json",
+		},
 		Config: &Config{
 			File:      "file",
 			Cluster:   "cluster",
@@ -116,6 +119,62 @@ func TestKubernetes_Plugin_Validate_NoApply(t *testing.T) {
 	}
 }
 
+func TestKubernetes_Plugin_Validate_NoApply(t *testing.T) {
+	// setup types
+	p := &Plugin{
+		Apply: &Apply{},
+		Config: &Config{
+			File:      "file",
+			Cluster:   "cluster",
+			Context:   "context",
+			Namespace: "namespace",
+		},
+		Patch: &Patch{
+			Containers: []*Container{
+				{
+					Name:  "container",
+					Image: "alpine",
+				},
+			},
+			Files:         []string{"patch.yml"},
+			Output:        "json",
+			RawContainers: `[{"name": "container", "image": "alpine"}]`,
+		},
+		Status: &Status{
+			Resources: []string{"resources"},
+			Timeout:   5 * time.Minute,
+		},
+	}
+
+	err := p.Validate()
+	if err != nil {
+		t.Errorf("Validate returned err: %v", err)
+	}
+}
+
+func TestKubernetes_Plugin_Validate_NoApplyOrPatch(t *testing.T) {
+	// setup types
+	p := &Plugin{
+		Apply: &Apply{},
+		Config: &Config{
+			File:      "file",
+			Cluster:   "cluster",
+			Context:   "context",
+			Namespace: "namespace",
+		},
+		Patch: &Patch{},
+		Status: &Status{
+			Resources: []string{"resources"},
+			Timeout:   5 * time.Minute,
+		},
+	}
+
+	err := p.Validate()
+	if err == nil {
+		t.Errorf("Validate should have returned err")
+	}
+}
+
 func TestKubernetes_Plugin_Validate_NoConfig(t *testing.T) {
 	// setup types
 	p := &Plugin{
@@ -131,6 +190,7 @@ func TestKubernetes_Plugin_Validate_NoConfig(t *testing.T) {
 					Image: "alpine",
 				},
 			},
+			Files:         []string{"patch.yml"},
 			Output:        "json",
 			RawContainers: `[{"name": "container", "image": "alpine"}]`,
 		},
@@ -167,8 +227,8 @@ func TestKubernetes_Plugin_Validate_NoPatch(t *testing.T) {
 	}
 
 	err := p.Validate()
-	if err == nil {
-		t.Errorf("Validate should have returned err")
+	if err != nil {
+		t.Errorf("Validate returned err: %v", err)
 	}
 }
 
@@ -176,7 +236,8 @@ func TestKubernetes_Plugin_Validate_NoStatus(t *testing.T) {
 	// setup types
 	p := &Plugin{
 		Apply: &Apply{
-			Files: []string{"apply.yml"},
+			Files:  []string{"apply.yml"},
+			Output: "json",
 		},
 		Config: &Config{
 			File:      "file",
@@ -191,6 +252,7 @@ func TestKubernetes_Plugin_Validate_NoStatus(t *testing.T) {
 					Image: "alpine",
 				},
 			},
+			Files:         []string{"patch.yml"},
 			Output:        "json",
 			RawContainers: `[{"name": "container", "image": "alpine"}]`,
 		},
