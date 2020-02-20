@@ -37,21 +37,6 @@ func (c *Config) Validate() error {
 		return fmt.Errorf("no config file provided")
 	}
 
-	// verify cluster is provided
-	if len(c.Cluster) == 0 {
-		return fmt.Errorf("no config cluster provided")
-	}
-
-	// verify context is provided
-	if len(c.Context) == 0 {
-		return fmt.Errorf("no config context provided")
-	}
-
-	// verify namespace is provided
-	if len(c.Namespace) == 0 {
-		return fmt.Errorf("no config namespace provided")
-	}
-
 	return nil
 }
 
