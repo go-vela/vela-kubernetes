@@ -33,12 +33,15 @@ func TestKubernetes_Patch_Command(t *testing.T) {
 	}
 
 	for _, container := range p.Containers {
+		pattern := fmt.Sprintf(deploymentPatch, container.Name, container.Image)
+
 		want := exec.Command(
 			kubectlBin,
 			fmt.Sprintf("--namespace=%s", c.Namespace),
 			fmt.Sprintf("--cluster=%s", c.Cluster),
 			fmt.Sprintf("--context=%s", c.Context),
 			"patch",
+			fmt.Sprintf("--patch=%s", pattern),
 			fmt.Sprintf("--local=%t", p.DryRun),
 			fmt.Sprintf("--output=%s", p.Output),
 		)

@@ -34,9 +34,6 @@ spec:
           containers:
             - name: %s
               image: %s
-          metadata:
-            annotations:
-              commit_sha:
 `
 
 // deploymentPatch represents the pattern needed to
@@ -57,9 +54,6 @@ spec:
       containers:
         - name: %s
           image: %s
-      metadata:
-        annotations:
-          commit_sha:
 `
 
 // Patch represents the plugin configuration for Patch config information.
@@ -78,6 +72,9 @@ type Patch struct {
 // the provided configuration to patch resources.
 func (p *Patch) Command(c *Config, container *Container) *exec.Cmd {
 	logrus.Tracef("creating kubectl patch command for %s from plugin configuration", container.Name)
+
+	// create pattern for patching containers
+	pattern := fmt.Sprintf(deploymentPatch, container.Name, container.Image)
 
 	// variable to store flags for command
 	var flags []string
@@ -102,6 +99,9 @@ func (p *Patch) Command(c *Config, container *Container) *exec.Cmd {
 
 	// add flag for patch kubectl command
 	flags = append(flags, "patch")
+
+	// add flag for the patch to be made
+	flags = append(flags, fmt.Sprintf("--patch=%s", pattern))
 
 	// add flag for dry run mode
 	flags = append(flags, fmt.Sprintf("--local=%t", p.DryRun))
