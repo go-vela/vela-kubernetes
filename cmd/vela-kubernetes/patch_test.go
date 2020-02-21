@@ -36,7 +36,7 @@ func TestKubernetes_Patch_Command(t *testing.T) {
 
 	for _, file := range p.Files {
 		for _, container := range p.Containers {
-			pattern := fmt.Sprintf(deploymentPatch, container.Name, container.Image)
+			pattern := fmt.Sprintf(patchPattern, container.Name, container.Image)
 
 			want := exec.Command(
 				kubectlBin,

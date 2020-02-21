@@ -14,48 +14,18 @@ import (
 
 const patchAction = "patch"
 
-// cronPatch represents the pattern needed to
-// patch a Kubernetes CronJob with a new image.
+// patchPattern represents the pattern needed to
+// patch a Kubernetes container with a new image.
 //
-// CRONJOB:
-//   spec: (job)
-//     jobTemplate:
-//       spec: (replica)
-//         template:
-//           spec: (pod)
-//             containers:
-//           metadata:
-//             annotations:
-//               commit_sha:
-const cronPatch = `
+// spec: (pod)
+//   containers:
+//     - name:
+//       image
+const patchPattern = `
 spec:
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          containers:
-            - name: %s
-              image: %s
-`
-
-// deploymentPatch represents the pattern needed to
-// patch a Kubernetes Deployment with a new image.
-//
-// DEPLOYMENT/DAEMONSET:
-//   spec: (replica set)
-//     template:
-//       spec: (pod)
-//         containers:
-//       metadata:
-//         annotations:
-//           commit_sha:
-const deploymentPatch = `
-spec:
-  template:
-    spec:
-      containers:
-        - name: %s
-          image: %s
+  containers:
+    - name: %s
+      image: %s
 `
 
 // Patch represents the plugin configuration for Patch config information.
@@ -78,7 +48,7 @@ func (p *Patch) Command(c *Config, file string, container *Container) *exec.Cmd 
 	logrus.Tracef("creating kubectl patch command for %s from plugin configuration", container.Name)
 
 	// create pattern for patching containers
-	pattern := fmt.Sprintf(deploymentPatch, container.Name, container.Image)
+	pattern := fmt.Sprintf(patchPattern, container.Name, container.Image)
 
 	// variable to store flags for command
 	var flags []string
