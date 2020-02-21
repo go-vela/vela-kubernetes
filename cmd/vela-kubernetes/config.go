@@ -74,5 +74,11 @@ func (c *Config) Write() error {
 	// create full path for .kube/config file
 	path := filepath.Join(home, ".kube/config")
 
+	// send Filesystem call to create directory path for .kube/config file
+	err = a.Fs.MkdirAll(filepath.Dir(path), 0777)
+	if err != nil {
+		return err
+	}
+
 	return a.WriteFile(path, []byte(c.File), 0600)
 }
