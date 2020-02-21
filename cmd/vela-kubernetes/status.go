@@ -12,6 +12,8 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+const statusAction = "status"
+
 // Status represents the plugin configuration for Status config information.
 type Status struct {
 	// Kubernetes resources to watch status of

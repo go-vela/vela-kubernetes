@@ -14,6 +14,7 @@ import (
 func TestKubernetes_Patch_Command(t *testing.T) {
 	// setup types
 	c := &Config{
+		Action:    "patch",
 		File:      "file",
 		Cluster:   "cluster",
 		Context:   "context",
@@ -61,6 +62,7 @@ func TestKubernetes_Patch_Command(t *testing.T) {
 func TestKubernetes_Patch_Exec_Error(t *testing.T) {
 	// setup types
 	c := &Config{
+		Action:    "patch",
 		File:      "file",
 		Cluster:   "cluster",
 		Context:   "context",

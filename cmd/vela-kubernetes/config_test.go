@@ -13,6 +13,23 @@ import (
 func TestKubernetes_Config_Validate(t *testing.T) {
 	// setup types
 	c := &Config{
+		Action:    "apply",
+		File:      "file",
+		Cluster:   "cluster",
+		Context:   "context",
+		Namespace: "namespace",
+	}
+
+	err := c.Validate()
+	if err != nil {
+		t.Errorf("Validate returned err: %v", err)
+	}
+}
+
+func TestKubernetes_Config_Validate_NoAction(t *testing.T) {
+	// setup types
+	c := &Config{
+		Action:    "apply",
 		File:      "file",
 		Cluster:   "cluster",
 		Context:   "context",
@@ -28,6 +45,7 @@ func TestKubernetes_Config_Validate(t *testing.T) {
 func TestKubernetes_Config_Validate_NoFile(t *testing.T) {
 	// setup types
 	c := &Config{
+		Action:    "apply",
 		Cluster:   "cluster",
 		Context:   "context",
 		Namespace: "namespace",
@@ -45,6 +63,7 @@ func TestKubernetes_Config_Write(t *testing.T) {
 
 	// setup types
 	c := &Config{
+		Action:    "apply",
 		File:      "file",
 		Cluster:   "cluster",
 		Context:   "context",
@@ -63,6 +82,7 @@ func TestKubernetes_Config_Write_NoFile(t *testing.T) {
 
 	// setup types
 	c := &Config{
+		Action:    "apply",
 		Cluster:   "cluster",
 		Context:   "context",
 		Namespace: "namespace",

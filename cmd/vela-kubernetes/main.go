@@ -68,6 +68,11 @@ func main() {
 		// Config Flags
 
 		cli.StringFlag{
+			EnvVar: "PARAMETER_ACTION,CONFIG_ACTION,KUBE_ACTION",
+			Name:   "config.action",
+			Usage:  "action to perform against Kubernetes",
+		},
+		cli.StringFlag{
 			EnvVar: "PARAMETER_CONFIG,CONFIG_FILE,KUBE_CONFIG",
 			Name:   "config.file",
 			Usage:  "kubectl configuration for interacting with Kubernetes",
@@ -176,6 +181,7 @@ func run(c *cli.Context) error {
 		},
 		// config configuration
 		Config: &Config{
+			Action:    c.String("config.action"),
 			File:      c.String("config.file"),
 			Cluster:   c.String("config.cluster"),
 			Context:   c.String("config.context"),

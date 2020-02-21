@@ -15,6 +15,7 @@ import (
 func TestKubernetes_Status_Command(t *testing.T) {
 	// setup types
 	c := &Config{
+		Action:    "status",
 		File:      "file",
 		Cluster:   "cluster",
 		Context:   "context",
@@ -51,6 +52,7 @@ func TestKubernetes_Status_Command(t *testing.T) {
 func TestKubernetes_Status_Exec_Error(t *testing.T) {
 	// setup types
 	c := &Config{
+		Action:    "status",
 		File:      "file",
 		Cluster:   "cluster",
 		Context:   "context",

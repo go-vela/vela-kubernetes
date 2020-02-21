@@ -11,6 +11,8 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+const applyAction = "apply"
+
 // Apply represents the plugin configuration for Apply config information.
 type Apply struct {
 	// enables pretending to apply the files
