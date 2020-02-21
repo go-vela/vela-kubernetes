@@ -76,6 +76,25 @@ func TestKubernetes_Config_Write(t *testing.T) {
 	}
 }
 
+func TestKubernetes_Config_Write_Error(t *testing.T) {
+	// setup filesystem
+	appFS = afero.NewReadOnlyFs(afero.NewMemMapFs())
+
+	// setup types
+	c := &Config{
+		Action:    "apply",
+		File:      "file",
+		Cluster:   "cluster",
+		Context:   "context",
+		Namespace: "namespace",
+	}
+
+	err := c.Write()
+	if err == nil {
+		t.Errorf("Write should have returned err")
+	}
+}
+
 func TestKubernetes_Config_Write_NoFile(t *testing.T) {
 	// setup filesystem
 	appFS = afero.NewMemMapFs()
