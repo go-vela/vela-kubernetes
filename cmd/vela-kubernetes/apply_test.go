@@ -14,6 +14,7 @@ import (
 func TestKubernetes_Apply_Command(t *testing.T) {
 	// setup types
 	c := &Config{
+		Action:    "apply",
 		File:      "file",
 		Cluster:   "cluster",
 		Context:   "context",
@@ -49,6 +50,7 @@ func TestKubernetes_Apply_Command(t *testing.T) {
 func TestKubernetes_Apply_Exec_Error(t *testing.T) {
 	// setup types
 	c := &Config{
+		Action:    "apply",
 		File:      "file",
 		Cluster:   "cluster",
 		Context:   "context",

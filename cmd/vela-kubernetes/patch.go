@@ -12,6 +12,8 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+const patchAction = "patch"
+
 // cronPatch represents the pattern needed to
 // patch a Kubernetes CronJob with a new image.
 //

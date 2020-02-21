@@ -5,7 +5,16 @@
 package main
 
 import (
+	"errors"
+	"fmt"
+
 	"github.com/sirupsen/logrus"
+)
+
+var (
+	// ErrInvalidAction defines the error type when the
+	// Action provided to the Plugin is unsupported.
+	ErrInvalidAction = errors.New("invalid action provided")
 )
 
 // Plugin represents the configuration loaded for the plugin.
@@ -36,28 +45,27 @@ func (p *Plugin) Exec() error {
 		return err
 	}
 
-	// check if containers were provided to patch
-	if len(p.Patch.Containers) > 0 {
-		// patch the Kubernetes resource files
-		err = p.Patch.Exec(p.Config)
-		if err != nil {
-			return err
-		}
-	} else { // default back to apply if no containers to patch
-		// apply the Kubernetes resource files
-		err = p.Apply.Exec(p.Config)
-		if err != nil {
-			return err
-		}
+	// execute action specific configuration
+	switch p.Config.Action {
+	case applyAction:
+		// execute apply action
+		return p.Apply.Exec(p.Config)
+	case patchAction:
+		// execute patch action
+		return p.Patch.Exec(p.Config)
+	case statusAction:
+		// execute status action
+		return p.Status.Exec(p.Config)
+	default:
+		return fmt.Errorf(
+			"%s: %s (Valid actions: %s, %s, %s)",
+			ErrInvalidAction,
+			p.Config.Action,
+			applyAction,
+			patchAction,
+			statusAction,
+		)
 	}
-
-	// watch the status for the specified resources
-	err = p.Status.Exec(p.Config)
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
 
 // Validate verifies the plugin is properly configured.
@@ -70,26 +78,25 @@ func (p *Plugin) Validate() error {
 		return err
 	}
 
-	// check if containers were provided to patch
-	if len(p.Patch.RawContainers) > 0 {
-		// validate patch configuration
-		err = p.Patch.Validate()
-		if err != nil {
-			return err
-		}
-	} else { // default back to apply if no containers to patch
+	// validate action specific configuration
+	switch p.Config.Action {
+	case applyAction:
 		// validate apply configuration
-		err = p.Apply.Validate()
-		if err != nil {
-			return err
-		}
+		return p.Apply.Validate()
+	case patchAction:
+		// validate patch configuration
+		return p.Patch.Validate()
+	case statusAction:
+		// validate status configuration
+		return p.Status.Validate()
+	default:
+		return fmt.Errorf(
+			"%s: %s (Valid actions: %s, %s, %s)",
+			ErrInvalidAction,
+			p.Config.Action,
+			applyAction,
+			patchAction,
+			statusAction,
+		)
 	}
-
-	// validate status configuration
-	err = p.Status.Validate()
-	if err != nil {
-		return err
-	}
-
-	return nil
 }

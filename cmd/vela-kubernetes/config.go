@@ -18,19 +18,26 @@ var appFS = afero.NewOsFs()
 
 // Config represents the plugin configuration for Kubernetes information.
 type Config struct {
-	// cluster configuration file to interact with Kubernetes
+	// action to perform against Kubernetes
+	Action string
+	// configuration file for communication with Kubernetes
 	File string
-	// name of the configuration cluster to use for interactions with Kubernetes
+	// name of the configuration cluster from file
 	Cluster string
-	// name of the configuration context to use for interactions with Kubernetes
+	// name of the configuration context from file
 	Context string
-	// name of the configuration namespace to use for interactions with Kubernetes
+	// name of the configuration namespace from file
 	Namespace string
 }
 
 // Validate verifies the Config is properly configured.
 func (c *Config) Validate() error {
 	logrus.Trace("validating config configuration")
+
+	// verify action is provided
+	if len(c.Action) == 0 {
+		return fmt.Errorf("no config action provided")
+	}
 
 	// verify file is provided
 	if len(c.File) == 0 {
