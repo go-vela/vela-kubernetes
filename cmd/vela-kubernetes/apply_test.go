@@ -15,10 +15,11 @@ func TestKubernetes_Apply_Command(t *testing.T) {
 	// setup types
 	c := &Config{
 		Action:    "apply",
-		File:      "file",
 		Cluster:   "cluster",
 		Context:   "context",
+		File:      "file",
 		Namespace: "namespace",
+		Path:      "~/.kube/config",
 	}
 
 	a := &Apply{
@@ -30,9 +31,10 @@ func TestKubernetes_Apply_Command(t *testing.T) {
 	for _, file := range a.Files {
 		want := exec.Command(
 			kubectlBin,
-			fmt.Sprintf("--namespace=%s", c.Namespace),
+			fmt.Sprintf("--kubeconfig=%s", c.Path),
 			fmt.Sprintf("--cluster=%s", c.Cluster),
 			fmt.Sprintf("--context=%s", c.Context),
+			fmt.Sprintf("--namespace=%s", c.Namespace),
 			"apply",
 			fmt.Sprintf("--dry-run=%t", a.DryRun),
 			fmt.Sprintf("--filename=%s", file),

@@ -32,10 +32,10 @@ func (s *Status) Command(c *Config, resource string) *exec.Cmd {
 	// variable to store flags for command
 	var flags []string
 
-	// check if config namespace is provided
-	if len(c.Namespace) > 0 {
-		// add flag for namespace from provided config namespace
-		flags = append(flags, fmt.Sprintf("--namespace=%s", c.Namespace))
+	// check if config path is provided
+	if len(c.Path) > 0 {
+		// add flag for path from provided config path
+		flags = append(flags, fmt.Sprintf("--kubeconfig=%s", c.Path))
 	}
 
 	// check if config cluster is provided
@@ -50,20 +50,20 @@ func (s *Status) Command(c *Config, resource string) *exec.Cmd {
 		flags = append(flags, fmt.Sprintf("--context=%s", c.Context))
 	}
 
+	// check if config namespace is provided
+	if len(c.Namespace) > 0 {
+		// add flag for namespace from provided config namespace
+		flags = append(flags, fmt.Sprintf("--namespace=%s", c.Namespace))
+	}
+
 	// add flag for status kubectl command
 	flags = append(flags, "rollout", "status")
 
-	// check if resource is provided
-	if len(resource) > 0 {
-		// add flag for resource from provided status resource
-		flags = append(flags, resource)
-	}
+	// add flag for resource from provided status resource
+	flags = append(flags, resource)
 
-	// check if status timeout is provided
-	if s.Timeout > 0 {
-		// add flag for timeout from provided status timeout
-		flags = append(flags, fmt.Sprintf("--timeout=%v", s.Timeout))
-	}
+	// add flag for timeout from provided status timeout
+	flags = append(flags, fmt.Sprintf("--timeout=%v", s.Timeout))
 
 	// add flag for watching status of rollout until it finishes
 	flags = append(flags, fmt.Sprintf("--watch=%v", s.Watch))

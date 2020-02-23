@@ -20,14 +20,16 @@ var appFS = afero.NewOsFs()
 type Config struct {
 	// action to perform against Kubernetes
 	Action string
-	// configuration file for communication with Kubernetes
-	File string
 	// name of the configuration cluster from file
 	Cluster string
 	// name of the configuration context from file
 	Context string
+	// configuration file for communication with Kubernetes
+	File string
 	// name of the configuration namespace from file
 	Namespace string
+	// path to configuration file for communcation with Kubernetes
+	Path string
 }
 
 // Validate verifies the Config is properly configured.
@@ -71,14 +73,19 @@ func (c *Config) Write() error {
 		home = u.HomeDir
 	}
 
-	// create full path for .kube/config file
-	path := filepath.Join(home, ".kube/config")
+	// check if a custom config path was provided
+	if len(c.Path) == 0 {
+		// create full path for .kube/config file
+		c.Path = filepath.Join(home, ".kube/config")
+	}
+
+	logrus.Debugf("Creating kubectl configuration file %s", c.Path)
 
 	// send Filesystem call to create directory path for .kube/config file
-	err = a.Fs.MkdirAll(filepath.Dir(path), 0777)
+	err = a.Fs.MkdirAll(filepath.Dir(c.Path), 0777)
 	if err != nil {
 		return err
 	}
 
-	return a.WriteFile(path, []byte(c.File), 0600)
+	return a.WriteFile(c.Path, []byte(c.File), 0600)
 }

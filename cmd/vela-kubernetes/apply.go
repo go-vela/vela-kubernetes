@@ -31,10 +31,10 @@ func (a *Apply) Command(c *Config, file string) *exec.Cmd {
 	// variable to store flags for command
 	var flags []string
 
-	// check if config namespace is provided
-	if len(c.Namespace) > 0 {
-		// add flag for namespace from provided config namespace
-		flags = append(flags, fmt.Sprintf("--namespace=%s", c.Namespace))
+	// check if config path is provided
+	if len(c.Path) > 0 {
+		// add flag for path from provided config path
+		flags = append(flags, fmt.Sprintf("--kubeconfig=%s", c.Path))
 	}
 
 	// check if config cluster is provided
@@ -47,6 +47,12 @@ func (a *Apply) Command(c *Config, file string) *exec.Cmd {
 	if len(c.Context) > 0 {
 		// add flag for context from provided config context
 		flags = append(flags, fmt.Sprintf("--context=%s", c.Context))
+	}
+
+	// check if config namespace is provided
+	if len(c.Namespace) > 0 {
+		// add flag for namespace from provided config namespace
+		flags = append(flags, fmt.Sprintf("--namespace=%s", c.Namespace))
 	}
 
 	// add flag for apply kubectl command

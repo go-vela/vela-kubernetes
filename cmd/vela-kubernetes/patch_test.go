@@ -14,11 +14,12 @@ import (
 func TestKubernetes_Patch_Command(t *testing.T) {
 	// setup types
 	c := &Config{
-		Action:    "patch",
-		File:      "file",
+		Action:    "apply",
 		Cluster:   "cluster",
 		Context:   "context",
+		File:      "file",
 		Namespace: "namespace",
+		Path:      "~/.kube/config",
 	}
 
 	p := &Patch{
@@ -40,9 +41,10 @@ func TestKubernetes_Patch_Command(t *testing.T) {
 
 			want := exec.Command(
 				kubectlBin,
-				fmt.Sprintf("--namespace=%s", c.Namespace),
+				fmt.Sprintf("--kubeconfig=%s", c.Path),
 				fmt.Sprintf("--cluster=%s", c.Cluster),
 				fmt.Sprintf("--context=%s", c.Context),
+				fmt.Sprintf("--namespace=%s", c.Namespace),
 				"patch",
 				fmt.Sprintf("--local=%t", p.DryRun),
 				fmt.Sprintf("--filename=%s", file),

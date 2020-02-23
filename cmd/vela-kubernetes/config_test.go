@@ -14,9 +14,9 @@ func TestKubernetes_Config_Validate(t *testing.T) {
 	// setup types
 	c := &Config{
 		Action:    "apply",
-		File:      "file",
 		Cluster:   "cluster",
 		Context:   "context",
+		File:      "file",
 		Namespace: "namespace",
 	}
 
@@ -30,9 +30,9 @@ func TestKubernetes_Config_Validate_NoAction(t *testing.T) {
 	// setup types
 	c := &Config{
 		Action:    "apply",
-		File:      "file",
 		Cluster:   "cluster",
 		Context:   "context",
+		File:      "file",
 		Namespace: "namespace",
 	}
 
@@ -64,9 +64,9 @@ func TestKubernetes_Config_Write(t *testing.T) {
 	// setup types
 	c := &Config{
 		Action:    "apply",
-		File:      "file",
 		Cluster:   "cluster",
 		Context:   "context",
+		File:      "file",
 		Namespace: "namespace",
 	}
 
@@ -83,9 +83,9 @@ func TestKubernetes_Config_Write_Error(t *testing.T) {
 	// setup types
 	c := &Config{
 		Action:    "apply",
-		File:      "file",
 		Cluster:   "cluster",
 		Context:   "context",
+		File:      "file",
 		Namespace: "namespace",
 	}
 
