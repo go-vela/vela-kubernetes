@@ -24,10 +24,11 @@ func TestKubernetes_Plugin_Exec_Apply_Error(t *testing.T) {
 		},
 		Config: &Config{
 			Action:    "apply",
-			File:      "file",
 			Cluster:   "cluster",
 			Context:   "context",
+			File:      "file",
 			Namespace: "namespace",
+			Path:      "~/.kube/config",
 		},
 		Patch:  &Patch{},
 		Status: &Status{},
@@ -48,10 +49,11 @@ func TestKubernetes_Plugin_Exec_Patch_Error(t *testing.T) {
 		Apply: &Apply{},
 		Config: &Config{
 			Action:    "patch",
-			File:      "file",
 			Cluster:   "cluster",
 			Context:   "context",
+			File:      "file",
 			Namespace: "namespace",
+			Path:      "~/.kube/config",
 		},
 		Patch: &Patch{
 			Containers: []*Container{
@@ -83,10 +85,11 @@ func TestKubernetes_Plugin_Exec_Status_Error(t *testing.T) {
 		Apply: &Apply{},
 		Config: &Config{
 			Action:    "status",
-			File:      "file",
 			Cluster:   "cluster",
 			Context:   "context",
+			File:      "file",
 			Namespace: "namespace",
+			Path:      "~/.kube/config",
 		},
 		Patch: &Patch{},
 		Status: &Status{
@@ -102,7 +105,7 @@ func TestKubernetes_Plugin_Exec_Status_Error(t *testing.T) {
 	}
 }
 
-func TestKubernetes_Plugin_Validate(t *testing.T) {
+func TestKubernetes_Plugin_Validate_Apply(t *testing.T) {
 	// setup types
 	p := &Plugin{
 		Apply: &Apply{
@@ -112,9 +115,30 @@ func TestKubernetes_Plugin_Validate(t *testing.T) {
 		},
 		Config: &Config{
 			Action:    "apply",
-			File:      "file",
 			Cluster:   "cluster",
 			Context:   "context",
+			File:      "file",
+			Namespace: "namespace",
+		},
+		Patch:  &Patch{},
+		Status: &Status{},
+	}
+
+	err := p.Validate()
+	if err != nil {
+		t.Errorf("Validate returned err: %v", err)
+	}
+}
+
+func TestKubernetes_Plugin_Validate_Patch(t *testing.T) {
+	// setup types
+	p := &Plugin{
+		Apply: &Apply{},
+		Config: &Config{
+			Action:    "patch",
+			Cluster:   "cluster",
+			Context:   "context",
+			File:      "file",
 			Namespace: "namespace",
 		},
 		Patch: &Patch{
@@ -129,6 +153,27 @@ func TestKubernetes_Plugin_Validate(t *testing.T) {
 			Output:        "json",
 			RawContainers: `[{"name": "container", "image": "alpine"}]`,
 		},
+		Status: &Status{},
+	}
+
+	err := p.Validate()
+	if err != nil {
+		t.Errorf("Validate returned err: %v", err)
+	}
+}
+
+func TestKubernetes_Plugin_Validate_Status(t *testing.T) {
+	// setup types
+	p := &Plugin{
+		Apply: &Apply{},
+		Config: &Config{
+			Action:    "status",
+			Cluster:   "cluster",
+			Context:   "context",
+			File:      "file",
+			Namespace: "namespace",
+		},
+		Patch: &Patch{},
 		Status: &Status{
 			Resources: []string{"resources"},
 			Timeout:   5 * time.Minute,

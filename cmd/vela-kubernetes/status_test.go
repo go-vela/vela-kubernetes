@@ -15,11 +15,12 @@ import (
 func TestKubernetes_Status_Command(t *testing.T) {
 	// setup types
 	c := &Config{
-		Action:    "status",
-		File:      "file",
+		Action:    "apply",
 		Cluster:   "cluster",
 		Context:   "context",
+		File:      "file",
 		Namespace: "namespace",
+		Path:      "~/.kube/config",
 	}
 
 	s := &Status{
@@ -31,14 +32,15 @@ func TestKubernetes_Status_Command(t *testing.T) {
 	for _, resource := range s.Resources {
 		want := exec.Command(
 			kubectlBin,
-			fmt.Sprintf("--namespace=%s", c.Namespace),
+			fmt.Sprintf("--kubeconfig=%s", c.Path),
 			fmt.Sprintf("--cluster=%s", c.Cluster),
 			fmt.Sprintf("--context=%s", c.Context),
+			fmt.Sprintf("--namespace=%s", c.Namespace),
 			"rollout",
 			"status",
 			resource,
-			fmt.Sprintf("--timeout=%v", s.Timeout),
-			"--watch=true",
+			fmt.Sprintf("--timeout=%s", s.Timeout),
+			fmt.Sprintf("--watch=%t", s.Watch),
 		)
 
 		got := s.Command(c, resource)

@@ -40,7 +40,7 @@ func (p *Plugin) Exec() error {
 	}
 
 	// output kubectl version for troubleshooting
-	err = execCmd(versionCmd())
+	err = execCmd(versionCmd(p.Config))
 	if err != nil {
 		return err
 	}

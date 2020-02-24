@@ -73,11 +73,6 @@ func main() {
 			Usage:  "action to perform against Kubernetes",
 		},
 		cli.StringFlag{
-			EnvVar: "PARAMETER_CONFIG,CONFIG_FILE,KUBE_CONFIG",
-			Name:   "config.file",
-			Usage:  "kubectl configuration for interacting with Kubernetes",
-		},
-		cli.StringFlag{
 			EnvVar: "PARAMETER_CLUSTER,CONFIG_CLUSTER,KUBE_CLUSTER",
 			Name:   "config.cluster",
 			Usage:  "kubectl cluster for interacting with Kubernetes",
@@ -88,9 +83,19 @@ func main() {
 			Usage:  "kubectl context for interacting with Kubernetes",
 		},
 		cli.StringFlag{
+			EnvVar: "PARAMETER_CONFIG,CONFIG_FILE,KUBE_CONFIG",
+			Name:   "config.file",
+			Usage:  "kubectl configuration for interacting with Kubernetes",
+		},
+		cli.StringFlag{
 			EnvVar: "PARAMETER_NAMESPACE,CONFIG_NAMESPACE,KUBE_NAMESPACE",
 			Name:   "config.namespace",
 			Usage:  "kubectl namespace for interacting with Kubernetes",
+		},
+		cli.StringFlag{
+			EnvVar: "PARAMETER_CONFIG_PATH,CONFIG_PATH,KUBE_CONFIG_PATH",
+			Name:   "config.path",
+			Usage:  "path to kubectl configuration file",
 		},
 
 		// Patch Flags
@@ -182,10 +187,11 @@ func run(c *cli.Context) error {
 		// config configuration
 		Config: &Config{
 			Action:    c.String("config.action"),
-			File:      c.String("config.file"),
 			Cluster:   c.String("config.cluster"),
 			Context:   c.String("config.context"),
+			File:      c.String("config.file"),
 			Namespace: c.String("config.namespace"),
+			Path:      c.String("config.path"),
 		},
 		// patch configuration
 		Patch: &Patch{
