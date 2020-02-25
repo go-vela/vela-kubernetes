@@ -17,15 +17,27 @@ const patchAction = "patch"
 // patchPattern represents the pattern needed to
 // patch a Kubernetes container with a new image.
 //
-// spec: (pod)
-//   containers:
-//     - name:
-//       image
+// spec: (replica set)
+//   template:
+//     spec: (pod)
+//       containers:
+//         - name:
+//           image:
 const patchPattern = `
-spec:
-  containers:
-    - name: %s
-      image: %s
+{
+  "spec": {
+    "template": {
+      "spec": {
+        "containers": [
+          {
+            "name": "%s",
+            "image": "%s"
+          }
+        ]
+      }
+    }
+  }
+}
 `
 
 // Patch represents the plugin configuration for Patch config information.
