@@ -101,14 +101,15 @@ steps:
 
 The following parameters are used to configure the image:
 
-| Name        | Description                                          | Required | Default |
-| ----------- | ---------------------------------------------------- | -------- | ------- |
-| `action`    | action to perform against Kubernetes                 | `true`   | `N/A`   |
-| `cluster`   | Kubernetes cluster from the configuration file       | `false`  | `N/A`   |
-| `context`   | Kubernetes context from the configuration file       | `false`  | `N/A`   |
-| `file`      | configuration file for communication with Kubernetes | `true`   | `N/A`   |
-| `log_level` | set the log level for the plugin                     | `true`   | `info`  |
-| `namespace` | Kubernetes namespace from the configuration file     | `false`  | `N/A`   |
+| Name        | Description                                          | Required | Default           |
+| ----------- | ---------------------------------------------------- | -------- | ----------------- |
+| `action`    | action to perform against Kubernetes                 | `true`   | `N/A`             |
+| `cluster`   | Kubernetes cluster from the configuration file       | `false`  | `N/A`             |
+| `context`   | Kubernetes context from the configuration file       | `false`  | `N/A`             |
+| `file`      | configuration file for communication with Kubernetes | `true`   | `N/A`             |
+| `log_level` | set the log level for the plugin                     | `true`   | `info`            |
+| `namespace` | Kubernetes namespace from the configuration file     | `false`  | `N/A`             |
+| `path`      | path to Kubernetes configuration file                | `false`  | **set by Vela**   |
 
 #### Apply
 
