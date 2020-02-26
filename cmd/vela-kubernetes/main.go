@@ -118,7 +118,6 @@ func main() {
 			EnvVar: "PARAMETER_OUTPUT,PATCH_OUTPUT",
 			Name:   "patch.output",
 			Usage:  "set output for patch - options: (json|yaml|wide)",
-			Value:  "json",
 		},
 
 		// Status Flags
