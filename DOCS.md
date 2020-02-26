@@ -118,8 +118,8 @@ The following parameters are used to configure the `apply` action:
 | Name      | Description                                      | Required | Default |
 | --------- | ------------------------------------------------ | -------- | ------- |
 | `dry_run` | enables pretending to perform the apply          | `false`  | `false` |
-| `files`   | list of Kubernetes files or directories to apply | `true`   | `false` |
-| `output`  | set the output for the apply                     | `false`  | `false` |
+| `files`   | list of Kubernetes files or directories to apply | `true`   | `N/A`   |
+| `output`  | set the output for the apply                     | `false`  | `N/A`   |
 
 #### Patch
 
@@ -127,10 +127,10 @@ The following parameters are used to configure the `patch` action:
 
 | Name         | Description                                      | Required | Default |
 | ------------ | ------------------------------------------------ | -------- | ------- |
-| `containers` | containers from the files to patch               | `true`   | `false` |
+| `containers` | containers from the files to patch               | `true`   | `N/A`   |
 | `dry_run`    | enables pretending to perform the patch          | `false`  | `false` |
-| `files`      | list of Kubernetes files or directories to patch | `true`   | `false` |
-| `output`     | set the output for the patch                     | `false`  | `false` |
+| `files`      | list of Kubernetes files or directories to patch | `true`   | `N/A`   |
+| `output`     | set the output for the patch                     | `false`  | `N/A`   |
 
 #### Status
 

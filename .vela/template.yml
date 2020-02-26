@@ -13,7 +13,7 @@
 # - .dry_run:    (default: false)
 # - .files:      (default: "[]")
 # - .containers: (default: "{}")
-# - .output:     (default: "json")
+# - .output:     (default: "")
 # - .resources:  (default: "[]")
 # - .timeout:    (default: "5m")
 # - .watch:      (default: true)
@@ -34,7 +34,7 @@ steps:
       dry_run: {{ default "false" .dry_run }}
       files: {{ default "[]" .files }}
       containers: {{ default "{}" .containers }}
-      output: {{ default "json" .output }}
+      output: {{ default "" .output }}
       resources: {{ default "[]" .resources }}
       timeout: {{ default "5m" .timeout }}
       watch: {{ default "true" .watch }}

@@ -62,7 +62,6 @@ func main() {
 			EnvVar: "PARAMETER_OUTPUT,APPLY_OUTPUT",
 			Name:   "apply.output",
 			Usage:  "set output for apply - options: (json|yaml|wide)",
-			Value:  "json",
 		},
 
 		// Config Flags
