@@ -45,6 +45,11 @@ func main() {
 			Usage:  "set log level - options: (trace|debug|info|warn|error|fatal|panic)",
 			Value:  "info",
 		},
+		cli.StringFlag{
+			EnvVar: "PARAMETER_VERSION,VELA_KUBECTL_VERSION,KUBECTL_VERSION",
+			Name:   "kubectl.version",
+			Usage:  "set kubectl version for plugin",
+		},
 
 		// Apply Flags
 
@@ -173,6 +178,18 @@ func run(c *cli.Context) error {
 		"docs":     "https://go-vela.github.io/docs/plugins/registry/kubernetes",
 		"registry": "https://hub.docker.com/r/target/vela-kubernetes",
 	}).Info("Vela Kubernetes Plugin")
+
+	// capture custom kubectl version requested
+	version := c.String("kubectl.version")
+
+	// check if a custom kubectl version was requested
+	if len(version) > 0 {
+		// attempt to install the custom kubectl version
+		err := install(version, os.Getenv("PLUGIN_KUBECTL_VERSION"))
+		if err != nil {
+			return err
+		}
+	}
 
 	// create the plugin
 	p := &Plugin{

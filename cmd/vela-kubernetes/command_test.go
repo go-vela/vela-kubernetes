@@ -33,7 +33,7 @@ func TestKubernetes_versionCmd(t *testing.T) {
 	}
 
 	want := exec.Command(
-		kubectlBin,
+		_kubectl,
 		fmt.Sprintf("--kubeconfig=%s", c.Path),
 		fmt.Sprintf("--cluster=%s", c.Cluster),
 		fmt.Sprintf("--context=%s", c.Context),
