@@ -13,8 +13,6 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-const kubectlBin = "/bin/kubectl"
-
 // execCmd is a helper function to
 // run the provided command.
 func execCmd(e *exec.Cmd) error {
@@ -66,5 +64,5 @@ func versionCmd(c *Config) *exec.Cmd {
 	// add flag for version kubectl command
 	flags = append(flags, "version")
 
-	return exec.Command(kubectlBin, flags...)
+	return exec.Command(_kubectl, flags...)
 }

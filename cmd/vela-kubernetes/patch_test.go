@@ -40,7 +40,7 @@ func TestKubernetes_Patch_Command(t *testing.T) {
 			pattern := fmt.Sprintf(patchPattern, container.Name, container.Image)
 
 			want := exec.Command(
-				kubectlBin,
+				_kubectl,
 				fmt.Sprintf("--kubeconfig=%s", c.Path),
 				fmt.Sprintf("--cluster=%s", c.Cluster),
 				fmt.Sprintf("--context=%s", c.Context),

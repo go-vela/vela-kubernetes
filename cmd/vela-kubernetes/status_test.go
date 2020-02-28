@@ -31,7 +31,7 @@ func TestKubernetes_Status_Command(t *testing.T) {
 
 	for _, resource := range s.Resources {
 		want := exec.Command(
-			kubectlBin,
+			_kubectl,
 			fmt.Sprintf("--kubeconfig=%s", c.Path),
 			fmt.Sprintf("--cluster=%s", c.Cluster),
 			fmt.Sprintf("--context=%s", c.Context),

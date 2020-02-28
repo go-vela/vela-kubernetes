@@ -70,7 +70,7 @@ func (a *Apply) Command(c *Config, file string) *exec.Cmd {
 		flags = append(flags, fmt.Sprintf("--output=%s", a.Output))
 	}
 
-	return exec.Command(kubectlBin, flags...)
+	return exec.Command(_kubectl, flags...)
 }
 
 // Exec formats and runs the commands for applying

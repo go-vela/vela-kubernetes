@@ -68,7 +68,7 @@ func (s *Status) Command(c *Config, resource string) *exec.Cmd {
 	// add flag for watching status of rollout until it finishes
 	flags = append(flags, fmt.Sprintf("--watch=%v", s.Watch))
 
-	return exec.Command(kubectlBin, flags...)
+	return exec.Command(_kubectl, flags...)
 }
 
 // Exec formats and runs the commands for watching the
