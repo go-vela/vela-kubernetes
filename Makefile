@@ -43,22 +43,30 @@ docker-run:
 
 	docker run --rm \
 		-e KUBE_CONFIG \
+		-e PARAMETER_ACTION \
 		-e PARAMETER_CLUSTER \
-		-e PARAMETER_CONTEXT \
-		-e PARAMETER_NAMESPACE \
-		-e PARAMETER_DRY_RUN \
-		-e PARAMETER_LOG_LEVEL \
-		-e PARAMETER_FILES \
 		-e PARAMETER_CONTAINERS \
+		-e PARAMETER_CONTEXT \
+		-e PARAMETER_DRY_RUN \
+		-e PARAMETER_FILES \
+		-e PARAMETER_LOG_LEVEL \
+		-e PARAMETER_NAMESPACE \
 		-e PARAMETER_OUTPUT \
-		-e PARAMETER_STATUSES \
+		-e PARAMETER_PATH \
+		-e PARAMETER_RESOURCES \
 		-e PARAMETER_TIMEOUT \
 		-e PARAMETER_WATCH \
+		-e PARAMETER_VERSION \
 		vela-kubernetes:local
 
 docker-example:
 
 	docker run --rm \
 		-e KUBE_CONFIG \
-		-e PARAMETER_FILES \
+		-e PARAMETER_ACTION=apply \
+		-e PARAMETER_CONTEXT=docker-desktop \
+		-e PARAMETER_DRY_RUN=true \
+		-e PARAMETER_LOG_LEVEL=trace \
+		-e PARAMETER_FILES=/examples \
+		-v $(shell pwd)/examples:/examples \
 		vela-kubernetes:local

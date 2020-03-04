@@ -6,17 +6,19 @@
 # - .image       (default: "target/vela-kubernetes:latest")
 # - .pull        (default: true)
 # - .log_level   (default: "info")
+# - .action      (default: "")
 # - .cluster:    (default: "")
+# - .containers: (default: "{}")
 # - .context:    (default: "")
-# - .namespace:  (default: "")
-# - .path:       (default: "")
 # - .dry_run:    (default: false)
 # - .files:      (default: "[]")
-# - .containers: (default: "{}")
+# - .namespace:  (default: "")
 # - .output:     (default: "")
+# - .path:       (default: "")
 # - .resources:  (default: "[]")
 # - .timeout:    (default: "5m")
 # - .watch:      (default: true)
+# - .version:    (default: "")
 
 metadata:
   template: true
@@ -27,14 +29,16 @@ steps:
     pull: {{ default "true" .pull }}
     parameters:
       log_level: {{ default "info" .log_level }}
+      action: {{ default "" .action }}
       cluster: {{ default "" .cluster }}
+      containers: {{ default "{}" .containers }}
       context: {{ default "" .context }}
-      namespace: {{ default "" .namespace }}
-      path: {{ default "" .path }}
       dry_run: {{ default "false" .dry_run }}
       files: {{ default "[]" .files }}
-      containers: {{ default "{}" .containers }}
+      namespace: {{ default "" .namespace }}
       output: {{ default "" .output }}
+      path: {{ default "" .path }}
       resources: {{ default "[]" .resources }}
       timeout: {{ default "5m" .timeout }}
       watch: {{ default "true" .watch }}
+      version: {{ default "" .version }}
