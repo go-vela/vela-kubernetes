@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/sirupsen/logrus"
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 
 	_ "github.com/joho/godotenv/autoload"
 )
@@ -23,7 +23,7 @@ func main() {
 	app.HelpName = "vela-kubernetes"
 	app.Usage = "Vela Kubernetes plugin for managing Kubernetes resources"
 	app.Copyright = "Copyright (c) 2020 Target Brands, Inc. All rights reserved."
-	app.Authors = []cli.Author{
+	app.Authors = []*cli.Author{
 		{
 			Name:  "Vela Admins",
 			Email: "vela@target.com",
@@ -39,109 +39,109 @@ func main() {
 
 	app.Flags = []cli.Flag{
 
-		cli.StringFlag{
-			EnvVar: "PARAMETER_LOG_LEVEL,VELA_LOG_LEVEL,KUBERNETES_LOG_LEVEL",
-			Name:   "log.level",
-			Usage:  "set log level - options: (trace|debug|info|warn|error|fatal|panic)",
-			Value:  "info",
+		&cli.StringFlag{
+			EnvVars: []string{"PARAMETER_LOG_LEVEL", "VELA_LOG_LEVEL", "KUBERNETES_LOG_LEVEL"},
+			Name:    "log.level",
+			Usage:   "set log level - options: (trace|debug|info|warn|error|fatal|panic)",
+			Value:   "info",
 		},
-		cli.StringFlag{
-			EnvVar: "PARAMETER_VERSION,VELA_KUBECTL_VERSION,KUBECTL_VERSION",
-			Name:   "kubectl.version",
-			Usage:  "set kubectl version for plugin",
+		&cli.StringFlag{
+			EnvVars: []string{"PARAMETER_VERSION", "VELA_KUBECTL_VERSION", "KUBECTL_VERSION"},
+			Name:    "kubectl.version",
+			Usage:   "set kubectl version for plugin",
 		},
 
 		// Apply Flags
 
-		cli.BoolFlag{
-			EnvVar: "PARAMETER_DRY_RUN,APPLY_DRY_RUN",
-			Name:   "apply.dry_run",
-			Usage:  "enables pretending to apply the files",
+		&cli.BoolFlag{
+			EnvVars: []string{"PARAMETER_DRY_RUN", "APPLY_DRY_RUN"},
+			Name:    "apply.dry_run",
+			Usage:   "enables pretending to apply the files",
 		},
-		cli.StringSliceFlag{
-			EnvVar: "PARAMETER_FILES,APPLY_FILES",
-			Name:   "apply.files",
-			Usage:  "kubernetes files or directories to apply",
+		&cli.StringSliceFlag{
+			EnvVars: []string{"PARAMETER_FILES", "APPLY_FILES"},
+			Name:    "apply.files",
+			Usage:   "kubernetes files or directories to apply",
 		},
-		cli.StringFlag{
-			EnvVar: "PARAMETER_OUTPUT,APPLY_OUTPUT",
-			Name:   "apply.output",
-			Usage:  "set output for apply - options: (json|yaml|wide)",
+		&cli.StringFlag{
+			EnvVars: []string{"PARAMETER_OUTPUT", "APPLY_OUTPUT"},
+			Name:    "apply.output",
+			Usage:   "set output for apply - options: (json|yaml|wide)",
 		},
 
 		// Config Flags
 
-		cli.StringFlag{
-			EnvVar: "PARAMETER_ACTION,CONFIG_ACTION,KUBE_ACTION",
-			Name:   "config.action",
-			Usage:  "action to perform against Kubernetes",
+		&cli.StringFlag{
+			EnvVars: []string{"PARAMETER_ACTION", "CONFIG_ACTION", "KUBE_ACTION"},
+			Name:    "config.action",
+			Usage:   "action to perform against Kubernetes",
 		},
-		cli.StringFlag{
-			EnvVar: "PARAMETER_CLUSTER,CONFIG_CLUSTER,KUBE_CLUSTER",
-			Name:   "config.cluster",
-			Usage:  "kubectl cluster for interacting with Kubernetes",
+		&cli.StringFlag{
+			EnvVars: []string{"PARAMETER_CLUSTER", "CONFIG_CLUSTER", "KUBE_CLUSTER"},
+			Name:    "config.cluster",
+			Usage:   "kubectl cluster for interacting with Kubernetes",
 		},
-		cli.StringFlag{
-			EnvVar: "PARAMETER_CONTEXT,CONFIG_CONTEXT,KUBE_CONTEXT",
-			Name:   "config.context",
-			Usage:  "kubectl context for interacting with Kubernetes",
+		&cli.StringFlag{
+			EnvVars: []string{"PARAMETER_CONTEXT", "CONFIG_CONTEXT", "KUBE_CONTEXT"},
+			Name:    "config.context",
+			Usage:   "kubectl context for interacting with Kubernetes",
 		},
-		cli.StringFlag{
-			EnvVar: "PARAMETER_CONFIG,CONFIG_FILE,KUBE_CONFIG",
-			Name:   "config.file",
-			Usage:  "kubectl configuration for interacting with Kubernetes",
+		&cli.StringFlag{
+			EnvVars: []string{"PARAMETER_CONFIG", "CONFIG_FILE", "KUBE_CONFIG"},
+			Name:    "config.file",
+			Usage:   "kubectl configuration for interacting with Kubernetes",
 		},
-		cli.StringFlag{
-			EnvVar: "PARAMETER_NAMESPACE,CONFIG_NAMESPACE,KUBE_NAMESPACE",
-			Name:   "config.namespace",
-			Usage:  "kubectl namespace for interacting with Kubernetes",
+		&cli.StringFlag{
+			EnvVars: []string{"PARAMETER_NAMESPACE", "CONFIG_NAMESPACE", "KUBE_NAMESPACE"},
+			Name:    "config.namespace",
+			Usage:   "kubectl namespace for interacting with Kubernetes",
 		},
-		cli.StringFlag{
-			EnvVar: "PARAMETER_CONFIG_PATH,CONFIG_PATH,KUBE_CONFIG_PATH",
-			Name:   "config.path",
-			Usage:  "path to kubectl configuration file",
+		&cli.StringFlag{
+			EnvVars: []string{"PARAMETER_CONFIG_PATH", "CONFIG_PATH", "KUBE_CONFIG_PATH"},
+			Name:    "config.path",
+			Usage:   "path to kubectl configuration file",
 		},
 
 		// Patch Flags
 
-		cli.StringFlag{
-			EnvVar: "PARAMETER_CONTAINERS,PATCH_CONTAINERS",
-			Name:   "patch.containers",
-			Usage:  "containers from files to patch",
+		&cli.StringFlag{
+			EnvVars: []string{"PARAMETER_CONTAINERS", "PATCH_CONTAINERS"},
+			Name:    "patch.containers",
+			Usage:   "containers from files to patch",
 		},
-		cli.BoolFlag{
-			EnvVar: "PARAMETER_DRY_RUN,PATCH_DRY_RUN",
-			Name:   "patch.dry_run",
-			Usage:  "enables pretending to patch the containers",
+		&cli.BoolFlag{
+			EnvVars: []string{"PARAMETER_DRY_RUN", "PATCH_DRY_RUN"},
+			Name:    "patch.dry_run",
+			Usage:   "enables pretending to patch the containers",
 		},
-		cli.StringSliceFlag{
-			EnvVar: "PARAMETER_FILES,PATCH_FILES",
-			Name:   "patch.files",
-			Usage:  "kubernetes files or directories to patch",
+		&cli.StringSliceFlag{
+			EnvVars: []string{"PARAMETER_FILES", "PATCH_FILES"},
+			Name:    "patch.files",
+			Usage:   "kubernetes files or directories to patch",
 		},
-		cli.StringFlag{
-			EnvVar: "PARAMETER_OUTPUT,PATCH_OUTPUT",
-			Name:   "patch.output",
-			Usage:  "set output for patch - options: (json|yaml|wide)",
+		&cli.StringFlag{
+			EnvVars: []string{"PARAMETER_OUTPUT", "PATCH_OUTPUT"},
+			Name:    "patch.output",
+			Usage:   "set output for patch - options: (json|yaml|wide)",
 		},
 
 		// Status Flags
 
-		cli.StringSliceFlag{
-			EnvVar: "PARAMETER_STATUSES,STATUS_RESOURCES",
-			Name:   "status.resources",
-			Usage:  "kubernetes resources to watch status on",
+		&cli.StringSliceFlag{
+			EnvVars: []string{"PARAMETER_STATUSES", "STATUS_RESOURCES"},
+			Name:    "status.resources",
+			Usage:   "kubernetes resources to watch status on",
 		},
-		cli.DurationFlag{
-			EnvVar: "PARAMETER_TIMEOUT,STATUS_TIMEOUT",
-			Name:   "status.timeout",
-			Usage:  "maximum duration to watch status on kubernetes resources",
-			Value:  5 * time.Minute,
+		&cli.DurationFlag{
+			EnvVars: []string{"PARAMETER_TIMEOUT", "STATUS_TIMEOUT"},
+			Name:    "status.timeout",
+			Usage:   "maximum duration to watch status on kubernetes resources",
+			Value:   5 * time.Minute,
 		},
-		cli.BoolTFlag{
-			EnvVar: "PARAMETER_WATCH,STATUS_WATCH",
-			Name:   "status.watch",
-			Usage:  "enables watching the status until the rollout completes",
+		&cli.BoolFlag{
+			EnvVars: []string{"PARAMETER_WATCH", "STATUS_WATCH"},
+			Name:    "status.watch",
+			Usage:   "enables watching the status until the rollout completes",
 		},
 	}
 
@@ -219,7 +219,7 @@ func run(c *cli.Context) error {
 		Status: &Status{
 			Resources: c.StringSlice("status.resources"),
 			Timeout:   c.Duration("status.timeout"),
-			Watch:     c.BoolT("status.watch"),
+			Watch:     c.Bool("status.watch"),
 		},
 	}
 
