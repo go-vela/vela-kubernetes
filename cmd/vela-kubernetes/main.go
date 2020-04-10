@@ -142,6 +142,7 @@ func main() {
 			EnvVars: []string{"PARAMETER_WATCH", "STATUS_WATCH"},
 			Name:    "status.watch",
 			Usage:   "enables watching the status until the rollout completes",
+			Value:   true,
 		},
 	}
 
