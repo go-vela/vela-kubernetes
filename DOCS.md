@@ -8,6 +8,8 @@ Registry: https://hub.docker.com/r/target/vela-kubernetes
 
 ## Usage
 
+_The plugin supports reading all parameters via environment variables or files. Values set as a file take precedence over default values set from the environment._
+
 Sample of applying Kubernetes files:
 
 ```yaml
