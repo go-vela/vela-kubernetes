@@ -55,3 +55,14 @@ comment:
   layout: "reach, diff, flags, files"
   behavior: default
   require_changes: no
+
+steps:
+  - name: some ghe stuff
+  
+  - name: check reboot
+    image: vela-cli:latest
+    commands:
+      - check logs previous info and crash if needed
+
+  - name: send some notification
+    image: slack

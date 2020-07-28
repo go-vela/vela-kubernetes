@@ -41,14 +41,14 @@ func main() {
 
 		&cli.StringFlag{
 			EnvVars:  []string{"PARAMETER_LOG_LEVEL", "VELA_LOG_LEVEL", "KUBERNETES_LOG_LEVEL"},
-			FilePath: string("/vela/secrets/parameter/log_level,/vela/secrets/kubernetes/log_level"),
+			FilePath: string("/vela/parameters/log_level,/vela/secrets/kubernetes/log_level"),
 			Name:     "log.level",
 			Usage:    "set log level - options: (trace|debug|info|warn|error|fatal|panic)",
 			Value:    "info",
 		},
 		&cli.StringFlag{
 			EnvVars:  []string{"PARAMETER_VERSION", "VELA_KUBECTL_VERSION", "KUBECTL_VERSION"},
-			FilePath: string("/vela/secrets/parameter/kubectl/version,/vela/secrets/kubernetes/kubectl/version"),
+			FilePath: string("/vela/parameters/kubectl/version,/vela/secrets/kubernetes/kubectl/version"),
 			Name:     "kubectl.version",
 			Usage:    "set kubectl version for plugin",
 		},
@@ -57,19 +57,19 @@ func main() {
 
 		&cli.BoolFlag{
 			EnvVars:  []string{"PARAMETER_DRY_RUN", "APPLY_DRY_RUN"},
-			FilePath: string("/vela/secrets/parameter/apply/dry_run,/vela/secrets/kubernetes/apply/dry_run"),
+			FilePath: string("/vela/parameters/apply/dry_run,/vela/secrets/kubernetes/apply/dry_run"),
 			Name:     "apply.dry_run",
 			Usage:    "enables pretending to apply the files",
 		},
 		&cli.StringSliceFlag{
 			EnvVars:  []string{"PARAMETER_FILES", "APPLY_FILES"},
-			FilePath: string("/vela/secrets/parameter/apply/files,/vela/secrets/kubernetes/apply/files"),
+			FilePath: string("/vela/parameters/apply/files,/vela/secrets/kubernetes/apply/files"),
 			Name:     "apply.files",
 			Usage:    "kubernetes files or directories to apply",
 		},
 		&cli.StringFlag{
 			EnvVars:  []string{"PARAMETER_OUTPUT", "APPLY_OUTPUT"},
-			FilePath: string("/vela/secrets/parameter/apply/output,/vela/secrets/kubernetes/apply/output"),
+			FilePath: string("/vela/parameters/apply/output,/vela/secrets/kubernetes/apply/output"),
 			Name:     "apply.output",
 			Usage:    "set output for apply - options: (json|yaml|wide)",
 		},
@@ -78,37 +78,37 @@ func main() {
 
 		&cli.StringFlag{
 			EnvVars:  []string{"PARAMETER_ACTION", "CONFIG_ACTION", "KUBE_ACTION"},
-			FilePath: string("/vela/secrets/parameter/config/output,/vela/secrets/kubernetes/config/output"),
+			FilePath: string("/vela/parameters/config/output,/vela/secrets/kubernetes/config/output"),
 			Name:     "config.action",
 			Usage:    "action to perform against Kubernetes",
 		},
 		&cli.StringFlag{
 			EnvVars:  []string{"PARAMETER_CLUSTER", "CONFIG_CLUSTER", "KUBE_CLUSTER"},
-			FilePath: string("/vela/secrets/parameter/config/cluster,/vela/secrets/kubernetes/config/cluster"),
+			FilePath: string("/vela/parameters/config/cluster,/vela/secrets/kubernetes/config/cluster"),
 			Name:     "config.cluster",
 			Usage:    "kubectl cluster for interacting with Kubernetes",
 		},
 		&cli.StringFlag{
 			EnvVars:  []string{"PARAMETER_CONTEXT", "CONFIG_CONTEXT", "KUBE_CONTEXT"},
-			FilePath: string("/vela/secrets/parameter/config/context,/vela/secrets/kubernetes/config/context"),
+			FilePath: string("/vela/parameters/config/context,/vela/secrets/kubernetes/config/context"),
 			Name:     "config.context",
 			Usage:    "kubectl context for interacting with Kubernetes",
 		},
 		&cli.StringFlag{
 			EnvVars:  []string{"PARAMETER_CONFIG", "CONFIG_FILE", "KUBE_CONFIG"},
-			FilePath: string("/vela/secrets/parameter/config/file,/vela/secrets/kubernetes/config/file"),
+			FilePath: string("/vela/parameters/config/file,/vela/secrets/kubernetes/config/file"),
 			Name:     "config.file",
 			Usage:    "kubectl configuration for interacting with Kubernetes",
 		},
 		&cli.StringFlag{
 			EnvVars:  []string{"PARAMETER_NAMESPACE", "CONFIG_NAMESPACE", "KUBE_NAMESPACE"},
-			FilePath: string("/vela/secrets/parameter/config/namespace,/vela/secrets/kubernetes/config/namespace"),
+			FilePath: string("/vela/parameters/config/namespace,/vela/secrets/kubernetes/config/namespace"),
 			Name:     "config.namespace",
 			Usage:    "kubectl namespace for interacting with Kubernetes",
 		},
 		&cli.StringFlag{
 			EnvVars:  []string{"PARAMETER_CONFIG_PATH", "CONFIG_PATH", "KUBE_CONFIG_PATH"},
-			FilePath: string("/vela/secrets/parameter/config/path,/vela/secrets/kubernetes/config/path"),
+			FilePath: string("/vela/parameters/config/path,/vela/secrets/kubernetes/config/path"),
 			Name:     "config.path",
 			Usage:    "path to kubectl configuration file",
 		},
@@ -117,25 +117,25 @@ func main() {
 
 		&cli.StringFlag{
 			EnvVars:  []string{"PARAMETER_CONTAINERS", "PATCH_CONTAINERS"},
-			FilePath: string("/vela/secrets/parameter/patch/containers,/vela/secrets/kubernetes/patch/containers"),
+			FilePath: string("/vela/parameters/patch/containers,/vela/secrets/kubernetes/patch/containers"),
 			Name:     "patch.containers",
 			Usage:    "containers from files to patch",
 		},
 		&cli.BoolFlag{
 			EnvVars:  []string{"PARAMETER_DRY_RUN", "PATCH_DRY_RUN"},
-			FilePath: string("/vela/secrets/parameter/patch/dry_run,/vela/secrets/kubernetes/patch/dry_run"),
+			FilePath: string("/vela/parameters/patch/dry_run,/vela/secrets/kubernetes/patch/dry_run"),
 			Name:     "patch.dry_run",
 			Usage:    "enables pretending to patch the containers",
 		},
 		&cli.StringSliceFlag{
 			EnvVars:  []string{"PARAMETER_FILES", "PATCH_FILES"},
-			FilePath: string("/vela/secrets/parameter/patch/files,/vela/secrets/kubernetes/patch/files"),
+			FilePath: string("/vela/parameters/patch/files,/vela/secrets/kubernetes/patch/files"),
 			Name:     "patch.files",
 			Usage:    "kubernetes files or directories to patch",
 		},
 		&cli.StringFlag{
 			EnvVars:  []string{"PARAMETER_OUTPUT", "PATCH_OUTPUT"},
-			FilePath: string("/vela/secrets/parameter/patch/output,/vela/secrets/kubernetes/patch/output"),
+			FilePath: string("/vela/parameters/patch/output,/vela/secrets/kubernetes/patch/output"),
 			Name:     "patch.output",
 			Usage:    "set output for patch - options: (json|yaml|wide)",
 		},
@@ -144,20 +144,20 @@ func main() {
 
 		&cli.StringSliceFlag{
 			EnvVars:  []string{"PARAMETER_STATUSES", "STATUS_RESOURCES"},
-			FilePath: string("/vela/secrets/parameter/status/resources,/vela/secrets/kubernetes/status/resources"),
+			FilePath: string("/vela/parameters/status/resources,/vela/secrets/kubernetes/status/resources"),
 			Name:     "status.resources",
 			Usage:    "kubernetes resources to watch status on",
 		},
 		&cli.DurationFlag{
 			EnvVars:  []string{"PARAMETER_TIMEOUT", "STATUS_TIMEOUT"},
-			FilePath: string("/vela/secrets/parameter/status/timeout,/vela/secrets/kubernetes/status/timeout"),
+			FilePath: string("/vela/parameters/status/timeout,/vela/secrets/kubernetes/status/timeout"),
 			Name:     "status.timeout",
 			Usage:    "maximum duration to watch status on kubernetes resources",
 			Value:    5 * time.Minute,
 		},
 		&cli.BoolFlag{
 			EnvVars:  []string{"PARAMETER_WATCH", "STATUS_WATCH"},
-			FilePath: string("/vela/secrets/parameter/status/watch,/vela/secrets/kubernetes/status/watch"),
+			FilePath: string("/vela/parameters/status/watch,/vela/secrets/kubernetes/status/watch"),
 			Name:     "status.watch",
 			Usage:    "enables watching the status until the rollout completes",
 			Value:    true,
