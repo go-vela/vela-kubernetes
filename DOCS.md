@@ -8,14 +8,14 @@ Registry: https://hub.docker.com/r/target/vela-kubernetes
 
 ## Usage
 
-_The plugin supports reading all parameters via environment variables or files. Values set as a file take precedence over default values set from the environment._
+**NOTE: It is not recommended to use `latest` as the tag for the Docker image. Users should use a semantically versioned tag instead.**
 
 Sample of applying Kubernetes files:
 
 ```yaml
 steps:
   - name: kubernetes
-    image: target/vela-kubernetes:v0.1.0
+    image: target/vela-kubernetes:latest
     pull: always
     parameters:
       action: apply
@@ -27,7 +27,7 @@ Sample of pretending to apply Kubernetes files:
 ```diff
 steps:
   - name: kubernetes
-    image: target/vela-kubernetes:v0.1.0
+    image: target/vela-kubernetes:latest
     pull: always
     parameters:
       action: apply
@@ -40,7 +40,7 @@ Sample of patching containers in Kubernetes files:
 ```yaml
 steps:
   - name: kubernetes
-    image: target/vela-kubernetes:v0.1.0
+    image: target/vela-kubernetes:latest
     pull: always
     parameters:
       action: patch
@@ -55,7 +55,7 @@ Sample of pretending to patch containers in Kubernetes files:
 ```diff
 steps:
   - name: kubernetes
-    image: target/vela-kubernetes:v0.1.0
+    image: target/vela-kubernetes:latest
     pull: always
     parameters:
       action: patch
@@ -71,7 +71,7 @@ Sample of watching the status of resources:
 ```yaml
 steps:
   - name: kubernetes
-    image: target/vela-kubernetes:v0.1.0
+    image: target/vela-kubernetes:latest
     pull: always
     parameters:
       action: status
@@ -87,7 +87,7 @@ You can use Vela secrets to substitute sensitive values at runtime:
 ```diff
 steps:
   - name: kubernetes
-    image: target/vela-kubernetes:v0.1.0
+    image: target/vela-kubernetes:latest
     pull: always
 +   secrets: [ kube_config ]
     parameters:
@@ -100,6 +100,11 @@ steps:
 ```
 
 ## Parameters
+
+**NOTE:**
+
+* the plugin supports reading all parameters via environment variables or files
+* values set from a file take precedence over values set from the environment
 
 The following parameters are used to configure the image:
 
