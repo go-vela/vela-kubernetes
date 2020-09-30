@@ -8,15 +8,15 @@ Registry: https://hub.docker.com/r/target/vela-kubernetes
 
 ## Usage
 
-_The plugin supports reading all parameters via environment variables or files. Values set as a file take precedence over default values set from the environment._
+**NOTE: It is not recommended to use `latest` as the tag for the Docker image. Users should use a semantically versioned tag instead.**
 
 Sample of applying Kubernetes files:
 
 ```yaml
 steps:
   - name: kubernetes
-    image: target/vela-kubernetes:v0.1.0
-    pull: true
+    image: target/vela-kubernetes:latest
+    pull: always
     parameters:
       action: apply
       files: [ kubernetes/common, kubernetes/dev/deploy.yml ]
@@ -27,8 +27,8 @@ Sample of pretending to apply Kubernetes files:
 ```diff
 steps:
   - name: kubernetes
-    image: target/vela-kubernetes:v0.1.0
-    pull: true
+    image: target/vela-kubernetes:latest
+    pull: always
     parameters:
       action: apply
 +     dry_run: true
@@ -40,8 +40,8 @@ Sample of patching containers in Kubernetes files:
 ```yaml
 steps:
   - name: kubernetes
-    image: target/vela-kubernetes:v0.1.0
-    pull: true
+    image: target/vela-kubernetes:latest
+    pull: always
     parameters:
       action: patch
       files: [ kubernetes/common, kubernetes/dev/deploy.yml ]
@@ -55,8 +55,8 @@ Sample of pretending to patch containers in Kubernetes files:
 ```diff
 steps:
   - name: kubernetes
-    image: target/vela-kubernetes:v0.1.0
-    pull: true
+    image: target/vela-kubernetes:latest
+    pull: always
     parameters:
       action: patch
 +     dry_run: true
@@ -71,8 +71,8 @@ Sample of watching the status of resources:
 ```yaml
 steps:
   - name: kubernetes
-    image: target/vela-kubernetes:v0.1.0
-    pull: true
+    image: target/vela-kubernetes:latest
+    pull: always
     parameters:
       action: status
       statuses: [ sample ]
@@ -87,8 +87,8 @@ You can use Vela secrets to substitute sensitive values at runtime:
 ```diff
 steps:
   - name: kubernetes
-    image: target/vela-kubernetes:v0.1.0
-    pull: true
+    image: target/vela-kubernetes:latest
+    pull: always
 +   secrets: [ kube_config ]
     parameters:
       action: apply
@@ -100,6 +100,11 @@ steps:
 ```
 
 ## Parameters
+
+**NOTE:**
+
+* the plugin supports reading all parameters via environment variables or files
+* values set from a file take precedence over values set from the environment
 
 The following parameters are used to configure the image:
 
