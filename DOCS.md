@@ -16,7 +16,7 @@ Sample of applying Kubernetes files:
 steps:
   - name: kubernetes
     image: target/vela-kubernetes:v0.1.0
-    pull: true
+    pull: always
     parameters:
       action: apply
       files: [ kubernetes/common, kubernetes/dev/deploy.yml ]
@@ -28,7 +28,7 @@ Sample of pretending to apply Kubernetes files:
 steps:
   - name: kubernetes
     image: target/vela-kubernetes:v0.1.0
-    pull: true
+    pull: always
     parameters:
       action: apply
 +     dry_run: true
@@ -41,7 +41,7 @@ Sample of patching containers in Kubernetes files:
 steps:
   - name: kubernetes
     image: target/vela-kubernetes:v0.1.0
-    pull: true
+    pull: always
     parameters:
       action: patch
       files: [ kubernetes/common, kubernetes/dev/deploy.yml ]
@@ -56,7 +56,7 @@ Sample of pretending to patch containers in Kubernetes files:
 steps:
   - name: kubernetes
     image: target/vela-kubernetes:v0.1.0
-    pull: true
+    pull: always
     parameters:
       action: patch
 +     dry_run: true
@@ -72,7 +72,7 @@ Sample of watching the status of resources:
 steps:
   - name: kubernetes
     image: target/vela-kubernetes:v0.1.0
-    pull: true
+    pull: always
     parameters:
       action: status
       statuses: [ sample ]
@@ -88,7 +88,7 @@ You can use Vela secrets to substitute sensitive values at runtime:
 steps:
   - name: kubernetes
     image: target/vela-kubernetes:v0.1.0
-    pull: true
+    pull: always
 +   secrets: [ kube_config ]
     parameters:
       action: apply
