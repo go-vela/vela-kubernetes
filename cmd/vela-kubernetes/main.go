@@ -83,7 +83,7 @@ func main() {
 
 		&cli.StringFlag{
 			EnvVars:  []string{"PARAMETER_ACTION", "CONFIG_ACTION", "KUBE_ACTION"},
-			FilePath: string("/vela/parameters/kubernetes/config/output,/vela/secrets/kubernetes/config/output"),
+			FilePath: string("/vela/parameters/kubernetes/config/action,/vela/secrets/kubernetes/config/action"),
 			Name:     "config.action",
 			Usage:    "action to perform against Kubernetes",
 		},
