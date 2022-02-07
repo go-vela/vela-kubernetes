@@ -28,6 +28,7 @@ func TestKubernetes_Apply_Command(t *testing.T) {
 		Output: "json",
 	}
 
+	// nolint: gosec // testing purposes
 	for _, file := range a.Files {
 		want := exec.Command(
 			_kubectl,

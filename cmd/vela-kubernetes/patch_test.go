@@ -35,6 +35,7 @@ func TestKubernetes_Patch_Command(t *testing.T) {
 		RawContainers: `[{"name": "container", "image": "alpine"}]`,
 	}
 
+	// nolint: gosec // testing purposes
 	for _, file := range p.Files {
 		for _, container := range p.Containers {
 			pattern := fmt.Sprintf(patchPattern, container.Name, container.Image)

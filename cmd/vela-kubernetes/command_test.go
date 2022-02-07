@@ -32,6 +32,7 @@ func TestKubernetes_versionCmd(t *testing.T) {
 		Path:      "~/.kube/config",
 	}
 
+	// nolint: gosec // testing purposes
 	want := exec.Command(
 		_kubectl,
 		fmt.Sprintf("--kubeconfig=%s", c.Path),
