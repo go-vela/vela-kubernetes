@@ -29,6 +29,7 @@ func TestKubernetes_Status_Command(t *testing.T) {
 		Watch:     true,
 	}
 
+	// nolint: gosec // testing purposes
 	for _, resource := range s.Resources {
 		want := exec.Command(
 			_kubectl,

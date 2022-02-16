@@ -53,6 +53,8 @@ func install(customVer, defaultVer string) error {
 	}
 
 	logrus.Debugf("changing ownership of file: %s", _kubectl)
+
+	// nolint: gomnd // ignore magic number
 	// ensure the kubectl binary is executable
 	err = a.Chmod(_kubectl, 0700)
 	if err != nil {
