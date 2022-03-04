@@ -58,7 +58,7 @@ func (p *Plugin) Exec() error {
 		return p.Status.Exec(p.Config)
 	default:
 		return fmt.Errorf(
-			"%s: %s (Valid actions: %s, %s, %s)",
+			"%w: %s (Valid actions: %s, %s, %s)",
 			ErrInvalidAction,
 			p.Config.Action,
 			applyAction,
@@ -91,7 +91,7 @@ func (p *Plugin) Validate() error {
 		return p.Status.Validate()
 	default:
 		return fmt.Errorf(
-			"%s: %s (Valid actions: %s, %s, %s)",
+			"%w: %s (Valid actions: %s, %s, %s)",
 			ErrInvalidAction,
 			p.Config.Action,
 			applyAction,

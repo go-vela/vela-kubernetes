@@ -167,7 +167,7 @@ func (p *Patch) Validate() error {
 	// serialize provided containers into expected type
 	err := p.Unmarshal()
 	if err != nil {
-		return fmt.Errorf("unable to unmarshal patch containers: %v", err)
+		return fmt.Errorf("unable to unmarshal patch containers: %w", err)
 	}
 
 	// iterate through all containers
@@ -175,7 +175,7 @@ func (p *Patch) Validate() error {
 		// verify the container is valid
 		err := container.Validate()
 		if err != nil {
-			return fmt.Errorf("invalid patch container provided: %v", err)
+			return fmt.Errorf("invalid patch container provided: %w", err)
 		}
 	}
 
