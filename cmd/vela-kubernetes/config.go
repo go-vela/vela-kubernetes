@@ -49,7 +49,6 @@ func (c *Config) Validate() error {
 	return nil
 }
 
-// nolint: gomnd // ignore magic number
 // Write creates a .kube/config file in the home directory of the current user.
 func (c *Config) Write() error {
 	logrus.Trace("writing Kubernetes configuration file")
