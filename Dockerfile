@@ -5,7 +5,7 @@
 # set a global Docker argument for the default CLI version
 #
 # https://github.com/moby/moby/issues/37345
-ARG KUBECTL_VERSION=v1.17.0
+ARG KUBECTL_VERSION=v1.24.0
 
 ###############################################################################
 ##    docker build --no-cache --target binary -t vela-kubernetes:binary .    ##
