@@ -155,7 +155,7 @@ The following parameters are used to configure the image:
 | `log_level`   | set the log level for the plugin                                | `true`   | `info`            | `PARAMETER_LOG_LEVEL`<br>`KUBERNETES_LOG_LEVEL`            |
 | `namespace`   | Kubernetes namespace from the configuration file                | `false`  | `N/A`             | `PARAMETER_NAMESPACE`<br>`KUBERNETES_NAMESPACE`            |
 | `path`        | path to configuration file for communication with Kubernetes    | `false`  | `N/A`             | `PARAMETER_PATH`<br>`KUBERNETES_PATH`                      |
-| `version`     | version of the `kubectl` CLI to install                         | `false`  | `v1.17.0`         | `PARAMETER_VERSION`<br>`KUBERNETES_VERSION`                |
+| `version`     | version of the `kubectl` CLI to install                         | `false`  | `v1.24.0`         | `PARAMETER_VERSION`<br>`KUBERNETES_VERSION`                |
 
 #### Apply
 
