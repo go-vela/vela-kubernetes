@@ -3,7 +3,7 @@
 [![license](https://img.shields.io/crates/l/gl.svg)](../LICENSE)
 [![GoDoc](https://godoc.org/github.com/go-vela/vela-kubernetes?status.svg)](https://godoc.org/github.com/go-vela/vela-kubernetes)
 [![Go Report Card](https://goreportcard.com/badge/go-vela/vela-kubernetes)](https://goreportcard.com/report/go-vela/vela-kubernetes)
-[![codecov](https://codecov.io/gh/go-vela/vela-kubernetes/branch/master/graph/badge.svg)](https://codecov.io/gh/go-vela/vela-kubernetes)
+[![codecov](https://codecov.io/gh/go-vela/vela-kubernetes/branch/main/graph/badge.svg)](https://codecov.io/gh/go-vela/vela-kubernetes)
 
 Vela plugin designed for managing resources in [Kubernetes](https://kubernetes.io/).
 
