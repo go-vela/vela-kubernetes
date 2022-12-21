@@ -16,7 +16,7 @@ const applyAction = "apply"
 // Apply represents the plugin configuration for Apply config information.
 type Apply struct {
 	// enables pretending to apply the files
-	DryRun bool
+	DryRun string
 	// Kubernetes files or directories to apply
 	Files []string
 	// sets the output for the apply command
@@ -59,7 +59,19 @@ func (a *Apply) Command(c *Config, file string) *exec.Cmd {
 	flags = append(flags, "apply")
 
 	// add flag for dry run from provided apply dry run
-	flags = append(flags, fmt.Sprintf("--dry-run=%t", a.DryRun))
+	if len(a.DryRun) > 0 {
+		dryRunOpt := "none"
+		switch a.DryRun {
+		case "true":
+			dryRunOpt = "client"
+		case "false":
+			dryRunOpt = "none"
+		default:
+			dryRunOpt = a.DryRun
+		}
+
+		flags = append(flags, fmt.Sprintf("--dry-run=%s", dryRunOpt))
+	}
 
 	// add flag for file from provided apply file
 	flags = append(flags, fmt.Sprintf("--filename=%s", file))

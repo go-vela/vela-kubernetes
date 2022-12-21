@@ -18,7 +18,7 @@ func TestKubernetes_Plugin_Exec_Apply_Error(t *testing.T) {
 	// setup types
 	p := &Plugin{
 		Apply: &Apply{
-			DryRun: false,
+			DryRun: "false",
 			Files:  []string{"apply.yml"},
 			Output: "json",
 		},
@@ -109,7 +109,7 @@ func TestKubernetes_Plugin_Validate_Apply(t *testing.T) {
 	// setup types
 	p := &Plugin{
 		Apply: &Apply{
-			DryRun: false,
+			DryRun: "false",
 			Files:  []string{"apply.yml"},
 			Output: "json",
 		},
