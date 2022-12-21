@@ -40,6 +40,7 @@ func TestKubernetes_versionCmd(t *testing.T) {
 		fmt.Sprintf("--context=%s", c.Context),
 		fmt.Sprintf("--namespace=%s", c.Namespace),
 		"version",
+		"--short",
 	)
 
 	got := versionCmd(c)

@@ -62,7 +62,7 @@ func versionCmd(c *Config) *exec.Cmd {
 	}
 
 	// add flag for version kubectl command
-	flags = append(flags, "version")
+	flags = append(flags, "version", "--short")
 
 	return exec.Command(_kubectl, flags...)
 }
