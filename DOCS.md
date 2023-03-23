@@ -97,15 +97,15 @@ gcloud beta secrets versions access 1 --secret [Secret Name] --project [Google P
 ```bash
 vela add secret --secret.engine native --secret.type org --org MYORGNAME --name k8s-gsa-key --value @k8s-gsa-key.json -event deployment --event pull_request --event push --event tag --event comment
 ```
-3. Create kubeconfig file and make sure to use user  `gke-gcloud-auth-user` for your cluster:
 
+3. Create kubeconfig file and make sure to use user  `gke-gcloud-auth-user` for your cluster:
 
 ```yaml
 apiVersion: v1
 clusters:
 - cluster:
     certificate-authority-data: XXXXXXXXXXX
-    server: https://ip of K8s IP Server
+    server: https://ip of K8s API Server
   name: clustername
 contexts:
 - context:
