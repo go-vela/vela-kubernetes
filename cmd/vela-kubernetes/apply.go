@@ -59,7 +59,10 @@ func (a *Apply) Command(c *Config, file string) *exec.Cmd {
 	flags = append(flags, "apply")
 
 	// add flag for dry run from provided apply dry run
-	flags = append(flags, fmt.Sprintf("--dry-run=%t", a.DryRun))
+	if a.DryRun {
+		flags = append(flags, fmt.Sprintf("--dry-run=server"))
+
+	}
 
 	// add flag for file from provided apply file
 	flags = append(flags, fmt.Sprintf("--filename=%s", file))
