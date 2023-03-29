@@ -61,7 +61,6 @@ func (a *Apply) Command(c *Config, file string) *exec.Cmd {
 	// add flag for dry run from provided apply dry run
 	if a.DryRun {
 		flags = append(flags, fmt.Sprintf("--dry-run=server"))
-
 	}
 
 	// add flag for file from provided apply file
