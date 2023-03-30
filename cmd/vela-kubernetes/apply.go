@@ -60,14 +60,13 @@ func (a *Apply) Command(c *Config, file string) *exec.Cmd {
 
 	// add flag for dry run from provided apply dry run
 	if len(a.DryRun) > 0 {
-		dryRunOpt := "none"
+		dryRunOpt := a.DryRun
+
 		switch a.DryRun {
 		case "true":
 			dryRunOpt = "client"
 		case "false":
 			dryRunOpt = "none"
-		default:
-			dryRunOpt = a.DryRun
 		}
 
 		flags = append(flags, fmt.Sprintf("--dry-run=%s", dryRunOpt))

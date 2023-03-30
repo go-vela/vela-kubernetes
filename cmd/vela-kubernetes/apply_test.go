@@ -37,7 +37,7 @@ func TestKubernetes_Apply_Command(t *testing.T) {
 			fmt.Sprintf("--context=%s", c.Context),
 			fmt.Sprintf("--namespace=%s", c.Namespace),
 			"apply",
-			fmt.Sprintf("--dry-run=none"),
+			"--dry-run=none",
 			fmt.Sprintf("--filename=%s", file),
 			fmt.Sprintf("--output=%s", a.Output),
 		)
@@ -75,7 +75,7 @@ func TestKubernetes_Apply_Command_WithDryRunTrue(t *testing.T) {
 			fmt.Sprintf("--context=%s", c.Context),
 			fmt.Sprintf("--namespace=%s", c.Namespace),
 			"apply",
-			fmt.Sprintf("--dry-run=client"),
+			"--dry-run=client",
 			fmt.Sprintf("--filename=%s", file),
 			fmt.Sprintf("--output=%s", a.Output),
 		)
