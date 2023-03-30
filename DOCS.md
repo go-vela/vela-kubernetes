@@ -157,6 +157,60 @@ The following parameters are used to configure the image:
 | `path`        | path to configuration file for communication with Kubernetes    | `false`  | `N/A`             | `PARAMETER_PATH`<br>`KUBERNETES_PATH`                      |
 | `version`     | version of the `kubectl` CLI to install                         | `false`  | `v1.24.0`         | `PARAMETER_VERSION`<br>`KUBERNETES_VERSION`                |
 
+### Config
+
+The content passed to the `config` parameter is expected to be a full
+Kubernetes Config object as would be found in `~/.kube/config`.
+Run `kubectl config view` to get an idea of what _could_ be in this config file.
+
+Consider this a minimal example of step with inline `config`:
+
+```yaml
+name: k8s apply
+image: target/vela-kubernetes:latest
+ruleset:
+	event: push
+	branch: [main]
+secrets: [K8S_TOKEN]
+parameters:
+	action: apply
+	files:
+  # These may not be necessary, but explicitness is good practice.
+	cluster: mycluster
+	context: mycontext
+	namespace: mynamespace
+		- k8s/myapp.yaml
+	config: |
+		---
+		apiVersion: v1
+		kind: Config
+		clusters:
+			- name: mycluster
+			  cluster:
+					server: https://kubernetes.example.com:6443
+		users:
+			- name: myuser
+				user:
+					token: "${K8S_TOKEN}"
+		contexts:
+			- name: mycontext
+			  context:
+					cluster: mycluster
+					namespace: mynamespace
+					user: myuser
+		current-context: mycontext
+```
+
+Note the interpolation of the `K8S_TOKEN` secret.
+Doing this can ease management of large secrets with multiple "sub-secrets"
+even when they don't change very often.
+
+### Actions
+
+These next sections define the parameters that must or can be passed when
+a particular action is active.
+
+
 #### Apply
 
 The following parameters are used to configure the `apply` action:
