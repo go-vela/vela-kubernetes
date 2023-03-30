@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: nginx-ingress
@@ -6,9 +6,13 @@ metadata:
     app: nginx
 spec:
   rules:
-  - http:
+  - host: nginx.fqdn.local
+    http:
       paths:
-      - path: /
-        backend:
-          serviceName: nginx-service
-          servicePort: 80
+      - backend:
+          service:
+            name: nginx-service
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
