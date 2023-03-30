@@ -82,6 +82,129 @@ steps:
       statuses: [ sample ]
 ```
 
+### GKE clusters authentication
+
+Google Kubernetes Engine (GKE) clusters version 1.26 and up require use of new "gke-gcloud-auth-plugin", see [blog](https://cloud.google.com/blog/products/containers-kubernetes/kubectl-auth-changes-in-gke).
+
+1. Download Google service account credentials:
+
+```bash
+gcloud beta secrets versions access 1 --secret [Secret Name] --project [Google Project Name] --out-file [Secret Name]-gsa-key.json
+```
+
+2. Upload Google service account secret to vela native secrets store:
+
+```bash
+vela add secret --secret.engine native --secret.type org --org MYORGNAME --name k8s-gsa-key --value @k8s-gsa-key.json -event deployment --event pull_request --event push --event tag --event comment
+```
+
+3. Create kubeconfig file and make sure to use user  `gke-gcloud-auth-user` for your cluster:
+
+```yaml
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: XXXXXXXXXXX
+    server: https://ip of K8s API Server
+  name: clustername
+contexts:
+- context:
+    cluster: clustername
+    user: gke-gcloud-auth-user
+  name: clustername
+
+current-context: ""
+kind: Config
+preferences: {}
+users:
+- name: gke-gcloud-auth-user
+  user:
+    exec:
+      apiVersion: client.authentication.k8s.io/v1beta1
+      args:
+      - --use_application_default_credentials
+      command: gke-gcloud-auth-plugin
+      env: null
+      installHint: Install gke-gcloud-auth-plugin for use with kubectl by following
+        https://cloud.google.com/blog/products/containers-kubernetes/kubectl-auth-changes-in-gke
+      interactiveMode: IfAvailable
+      provideClusterInfo: true
+
+```
+4. Upload kubeconfig file to vela native secretrs store: 
+
+```bash
+vela add secret --secret.engine native --secret.type org --org MYORGNAME --name kube_config_secret --value @kube_config_secret.file -event deployment --event pull_request --event push --event tag --event comment
+```
+
+5. Configure Vela file:
+
+```yaml
+secrets:
+  - name: kube_config_secret
+    key: ORGNAME/kube-config
+    type: org
+  - name: gsa_key
+    key: ORGNAME/k8s-gsa-key
+    type: org
+
+  k8s-gsa-setup:
+    steps:
+    - name: setup-gke-access
+      image: alpine:latest
+      ruleset:
+        branch: master
+        event: [pull_request, push, deployment]
+      pull: always
+      environment:
+        GOOGLE_APPLICATION_CREDENTIALS: "/vela/secrets/.kube/gsa-key.json" # <== change name as needed
+      secrets:
+        - source: gsa_key
+          target: GSA_KEY_FILE
+      commands:
+        - mkdir -p /vela/secrets/.kube/
+        - echo "$GSA_KEY_FILE" > $GOOGLE_APPLICATION_CREDENTIALS
+
+  k8s-plugin-dry-run:
+    needs: [ k8s-gsa-setup ]
+    steps:
+    - name: dry-run
+      image: target/vela-kubernetes:latest
+      ruleset:
+        branch: master
+        event: [ pull_request ]
+      environment:
+        GOOGLE_APPLICATION_CREDENTIALS: "/vela/secrets/.kube/gsa-key.json" # <== change name as needed
+        USE_GKE_GCLOUD_AUTH_PLUGIN: True # <== required
+      secrets:
+        - source: kube_config_secret
+          target: kube_config
+      parameters:
+        action: apply
+        dry_run: true
+        context: context-name   # <== change as needed
+        files: [ Kubernetes/manifests/service.yaml ]
+
+  k8s-plugin-apply:
+    needs: [ k8s-gsa-setup ]
+    steps:
+    - name: run-apply
+      image: target/vela-kubernetes:latest
+      ruleset:
+        branch: master
+        event: [ push ]
+      environment:
+        GOOGLE_APPLICATION_CREDENTIALS: "/vela/secrets/.kube/gsa-key.json" # <== change name as needed
+        USE_GKE_GCLOUD_AUTH_PLUGIN: True # <== required
+      secrets:
+        - source: kube_config_secret
+          target: kube_config
+      parameters:
+        action: apply
+        context: context-name   # <== change as needed
+        files: [ Kubernetes/manifests/service.yaml ]
+```
+
 ## Secrets
 
 > **NOTE:** Users should refrain from configuring sensitive information in your pipeline in plain text.
