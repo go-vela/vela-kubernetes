@@ -211,7 +211,7 @@ func run(c *cli.Context) error {
 	p := &Plugin{
 		// apply configuration
 		Apply: &Apply{
-			DryRun: c.Bool("dry_run"),
+			DryRun: c.String("dry_run"),
 			Files:  c.StringSlice("files"),
 			Output: c.String("output"),
 		},

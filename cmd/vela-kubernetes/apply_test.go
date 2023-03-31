@@ -23,7 +23,7 @@ func TestKubernetes_Apply_Command(t *testing.T) {
 	}
 
 	a := &Apply{
-		DryRun: false,
+		DryRun: "false",
 		Files:  []string{"apply.yml"},
 		Output: "json",
 	}
@@ -37,7 +37,83 @@ func TestKubernetes_Apply_Command(t *testing.T) {
 			fmt.Sprintf("--context=%s", c.Context),
 			fmt.Sprintf("--namespace=%s", c.Namespace),
 			"apply",
-			fmt.Sprintf("--dry-run=%t", a.DryRun),
+			"--dry-run=none",
+			fmt.Sprintf("--filename=%s", file),
+			fmt.Sprintf("--output=%s", a.Output),
+		)
+
+		got := a.Command(c, file)
+
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("Command is %v, want %v", got, want)
+		}
+	}
+}
+func TestKubernetes_Apply_Command_WithDryRunTrue(t *testing.T) {
+	// setup types
+	c := &Config{
+		Action:    "apply",
+		Cluster:   "cluster",
+		Context:   "context",
+		File:      "file",
+		Namespace: "namespace",
+		Path:      "~/.kube/config",
+	}
+
+	a := &Apply{
+		DryRun: "true",
+		Files:  []string{"apply.yml"},
+		Output: "json",
+	}
+
+	// nolint: gosec // testing purposes
+	for _, file := range a.Files {
+		want := exec.Command(
+			_kubectl,
+			fmt.Sprintf("--kubeconfig=%s", c.Path),
+			fmt.Sprintf("--cluster=%s", c.Cluster),
+			fmt.Sprintf("--context=%s", c.Context),
+			fmt.Sprintf("--namespace=%s", c.Namespace),
+			"apply",
+			"--dry-run=client",
+			fmt.Sprintf("--filename=%s", file),
+			fmt.Sprintf("--output=%s", a.Output),
+		)
+
+		got := a.Command(c, file)
+
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("Command is %v, want %v", got, want)
+		}
+	}
+}
+func TestKubernetes_Apply_Command_WithDryRunAnythingNonBoolean(t *testing.T) {
+	// setup types
+	c := &Config{
+		Action:    "apply",
+		Cluster:   "cluster",
+		Context:   "context",
+		File:      "file",
+		Namespace: "namespace",
+		Path:      "~/.kube/config",
+	}
+
+	a := &Apply{
+		DryRun: "server",
+		Files:  []string{"apply.yml"},
+		Output: "json",
+	}
+
+	// nolint: gosec // testing purposes
+	for _, file := range a.Files {
+		want := exec.Command(
+			_kubectl,
+			fmt.Sprintf("--kubeconfig=%s", c.Path),
+			fmt.Sprintf("--cluster=%s", c.Cluster),
+			fmt.Sprintf("--context=%s", c.Context),
+			fmt.Sprintf("--namespace=%s", c.Namespace),
+			"apply",
+			fmt.Sprintf("--dry-run=%s", a.DryRun),
 			fmt.Sprintf("--filename=%s", file),
 			fmt.Sprintf("--output=%s", a.Output),
 		)
@@ -61,7 +137,7 @@ func TestKubernetes_Apply_Exec_Error(t *testing.T) {
 	}
 
 	a := &Apply{
-		DryRun: false,
+		DryRun: "false",
 		Files:  []string{"apply.yml"},
 		Output: "json",
 	}
@@ -75,7 +151,7 @@ func TestKubernetes_Apply_Exec_Error(t *testing.T) {
 func TestKubernetes_Apply_Validate(t *testing.T) {
 	// setup types
 	a := &Apply{
-		DryRun: false,
+		DryRun: "false",
 		Files:  []string{"apply.yml"},
 		Output: "json",
 	}
@@ -89,7 +165,7 @@ func TestKubernetes_Apply_Validate(t *testing.T) {
 func TestKubernetes_Apply_Validate_NoFiles(t *testing.T) {
 	// setup types
 	a := &Apply{
-		DryRun: false,
+		DryRun: "false",
 		Output: "json",
 	}
 

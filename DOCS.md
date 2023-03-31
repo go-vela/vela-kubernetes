@@ -340,7 +340,7 @@ The following parameters are used to configure the `apply` action:
 
 | Name      | Description                                      | Required | Default | Environment Variables                       |
 | --------- | ------------------------------------------------ | -------- | ------- | ------------------------------------------- |
-| `dry_run` | enables pretending to perform the apply          | `false`  | `false` | `PARAMETER_DRY_RUN`<br>`KUBERNETES_DRY_RUN` |
+| `dry_run` | enables pretending to perform the apply (`true`/`client`, `false`/`none`, `server`)          | `false`  | `false` | `PARAMETER_DRY_RUN`<br>`KUBERNETES_DRY_RUN` |
 | `files`   | list of Kubernetes files or directories to apply | `true`   | `N/A`   | `PARAMETER_FILES`<br>`KUBERNETES_FILES`     |
 | `output`  | set the output for the apply                     | `false`  | `N/A`   | `PARAMETER_OUTPUT`<br>`KUBERNETES_OUTPUT`   |
 
