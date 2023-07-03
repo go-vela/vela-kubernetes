@@ -3,13 +3,13 @@ module github.com/go-vela/vela-kubernetes
 go 1.18
 
 require (
-	github.com/Masterminds/semver/v3 v3.2.0
+	github.com/Masterminds/semver/v3 v3.2.1
 	github.com/go-vela/types v0.18.1
 	github.com/hashicorp/go-getter v1.7.1
 	github.com/joho/godotenv v1.5.1
-	github.com/sirupsen/logrus v1.9.0
+	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/afero v1.9.5
-	github.com/urfave/cli/v2 v2.25.1
+	github.com/urfave/cli/v2 v2.25.7
 )
 
 require (
