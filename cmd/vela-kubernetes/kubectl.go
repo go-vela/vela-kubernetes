@@ -9,7 +9,7 @@ import (
 	"runtime"
 	"strings"
 
-	getter "github.com/hashicorp/go-getter"
+	getter "github.com/hashicorp/go-getter/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/afero"
 )
