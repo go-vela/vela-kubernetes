@@ -18,11 +18,12 @@ const patchAction = "patch"
 // patch a Kubernetes container with a new image.
 //
 // spec: (replica set)
-//   template:
-//     spec: (pod)
-//       containers:
-//         - name:
-//           image:
+//
+//	template:
+//	  spec: (pod)
+//	    containers:
+//	      - name:
+//	        image:
 const patchPattern = `
 {
   "spec": {
