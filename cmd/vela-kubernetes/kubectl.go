@@ -5,11 +5,12 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"runtime"
 	"strings"
 
-	getter "github.com/hashicorp/go-getter"
+	getter "github.com/hashicorp/go-getter/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/afero"
 )
@@ -47,7 +48,7 @@ func install(customVer, defaultVer string) error {
 
 	logrus.Infof("downloading kubectl version from: %s", url)
 	// send the HTTP request to install kubectl
-	err = getter.GetFile(_kubectl, url, []getter.ClientOption{}...)
+	_, err = getter.GetFile(context.Background(), _kubectl, url)
 	if err != nil {
 		return err
 	}
