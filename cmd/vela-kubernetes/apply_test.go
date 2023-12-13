@@ -26,7 +26,7 @@ func TestKubernetes_Apply_Command(t *testing.T) {
 		Output: "json",
 	}
 
-	// nolint: gosec // testing purposes
+	//nolint:gosec // testing purposes
 	for _, file := range a.Files {
 		want := exec.Command(
 			_kubectl,
@@ -64,7 +64,7 @@ func TestKubernetes_Apply_Command_WithDryRunTrue(t *testing.T) {
 		Output: "json",
 	}
 
-	// nolint: gosec // testing purposes
+	//nolint:gosec // testing purposes
 	for _, file := range a.Files {
 		want := exec.Command(
 			_kubectl,
@@ -102,7 +102,7 @@ func TestKubernetes_Apply_Command_WithDryRunAnythingNonBoolean(t *testing.T) {
 		Output: "json",
 	}
 
-	// nolint: gosec // testing purposes
+	//nolint:gosec // testing purposes
 	for _, file := range a.Files {
 		want := exec.Command(
 			_kubectl,
