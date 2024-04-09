@@ -29,7 +29,7 @@ RUN apk add --update --no-cache ca-certificates
 ##    docker build --no-cache --target gcloud -t vela-kubernetes:gcloud .    ##
 #############################################################################
 
-FROM gcr.io/google.com/cloudsdktool/google-cloud-cli:alpine@sha256:cffaa3ac348501d8dfbdbb362dbed64d8e0f82df84a709f41bdfa3bc95042838 as gcloud
+FROM gcr.io/google.com/cloudsdktool/google-cloud-cli:alpine@sha256:93bcd078e0bcd0063a30b4b9f8a695a6299a832cf8bb721be17589cf4bc1a8f1 as gcloud
 
 RUN gcloud components install gke-gcloud-auth-plugin
 
