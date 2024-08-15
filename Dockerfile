@@ -9,7 +9,7 @@ ARG KUBECTL_VERSION=v1.24.12
 ##    docker build --no-cache --target binary -t vela-kubernetes:binary .    ##
 ###############################################################################
 
-FROM alpine:3.19.1@sha256:c5b1261d6d3e43071626931fc004f70149baeba2c8ec672bd4f27761f8e1ad6b as binary
+FROM alpine:3.20.2@sha256:0a4eaa0eecf5f8c050e5bba433f58c052be7587ee8af3e8b3910ef9ab5fbe9f5 as binary
 
 ARG KUBECTL_VERSION
 
@@ -21,7 +21,7 @@ RUN chmod 0700 /bin/kubectl
 ##    docker build --no-cache --target certs -t vela-kubernetes:certs .    ##
 #############################################################################
 
-FROM alpine:3.19.1@sha256:c5b1261d6d3e43071626931fc004f70149baeba2c8ec672bd4f27761f8e1ad6b as certs
+FROM alpine:3.20.2@sha256:0a4eaa0eecf5f8c050e5bba433f58c052be7587ee8af3e8b3910ef9ab5fbe9f5 as certs
 
 RUN apk add --update --no-cache ca-certificates
 
@@ -29,7 +29,7 @@ RUN apk add --update --no-cache ca-certificates
 ##    docker build --no-cache --target gcloud -t vela-kubernetes:gcloud .    ##
 #############################################################################
 
-FROM gcr.io/google.com/cloudsdktool/google-cloud-cli:alpine@sha256:e9328fdee872bbe56e1f24138b5c471266a971bd578f2ad1abb5a15c47460903 as gcloud
+FROM gcr.io/google.com/cloudsdktool/google-cloud-cli:alpine@sha256:c58281f4e20e1c2339e1cafbbbb1848697f0e50f027c0b2d7c8b38149d8e8c5c as gcloud
 
 RUN gcloud components install gke-gcloud-auth-plugin
 
