@@ -3,7 +3,7 @@ module github.com/go-vela/vela-kubernetes
 go 1.23.0
 
 require (
-	github.com/Masterminds/semver/v3 v3.2.1
+	github.com/Masterminds/semver/v3 v3.3.0
 	github.com/go-vela/types v0.24.0
 	github.com/hashicorp/go-getter/v2 v2.2.3
 	github.com/joho/godotenv v1.5.1
