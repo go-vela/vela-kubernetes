@@ -1,20 +1,20 @@
 module github.com/go-vela/vela-kubernetes
 
-go 1.23.0
+go 1.23.2
 
 require (
 	github.com/Masterminds/semver/v3 v3.3.0
-	github.com/go-vela/types v0.24.0
+	github.com/go-vela/types v0.25.1
 	github.com/hashicorp/go-getter/v2 v2.2.3
 	github.com/joho/godotenv v1.5.1
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/afero v1.11.0
-	github.com/urfave/cli/v2 v2.27.4
+	github.com/urfave/cli/v2 v2.27.5
 )
 
 require (
 	github.com/bgentry/go-netrc v0.0.0-20140422174119-9fd32a8b3d3d // indirect
-	github.com/cpuguy83/go-md2man/v2 v2.0.4 // indirect
+	github.com/cpuguy83/go-md2man/v2 v2.0.5 // indirect
 	github.com/hashicorp/errwrap v1.0.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-multierror v1.1.0 // indirect
