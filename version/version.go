@@ -6,8 +6,9 @@ import (
 	"runtime"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/go-vela/server/version"
 	"github.com/sirupsen/logrus"
+
+	"github.com/go-vela/server/version"
 )
 
 var (
