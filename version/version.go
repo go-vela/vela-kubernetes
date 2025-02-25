@@ -3,11 +3,11 @@
 package version
 
 import (
-	"github.com/sirupsen/logrus"
 	"runtime"
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/go-vela/server/version"
+	"github.com/sirupsen/logrus"
 )
 
 var (
@@ -31,7 +31,7 @@ var (
 func New() *version.Version {
 	v, err := semver.NewVersion(Tag)
 	if err != nil {
-		logrus.Warningf("unable to parse semantic version for %s: %w", Tag, err)
+		logrus.Warningf("unable to parse semantic version for %s: %v", Tag, err)
 	}
 
 	return &version.Version{
