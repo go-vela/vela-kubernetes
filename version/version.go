@@ -3,12 +3,11 @@
 package version
 
 import (
-	"fmt"
+	"github.com/sirupsen/logrus"
 	"runtime"
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/go-vela/server/version"
-	"github.com/sirupsen/logrus"
 )
 
 var (
@@ -25,22 +24,14 @@ var (
 	// OS represents the operating system information for the package.
 	OS = runtime.GOOS
 	// Tag represents the git tag information for the package.
-	Tag string
+	Tag = "v0.0.0"
 )
 
 // New creates a new version object for Vela that is used throughout the application.
 func New() *version.Version {
-	// check if a semantic tag was provided
-	if len(Tag) == 0 {
-		logrus.Warning("no semantic tag provided - defaulting to v0.0.0")
-
-		// set a fallback default for the tag
-		Tag = "v0.0.0"
-	}
-
 	v, err := semver.NewVersion(Tag)
 	if err != nil {
-		fmt.Println(fmt.Errorf("unable to parse semantic version for %s: %w", Tag, err))
+		logrus.Warningf("unable to parse semantic version for %s: %w", Tag, err)
 	}
 
 	return &version.Version{
