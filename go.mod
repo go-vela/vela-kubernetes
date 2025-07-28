@@ -1,8 +1,6 @@
 module github.com/go-vela/vela-kubernetes
 
-go 1.23.5
-
-toolchain go1.24.5
+go 1.24.5
 
 require (
 	github.com/Masterminds/semver/v3 v3.4.0

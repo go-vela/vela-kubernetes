@@ -3,7 +3,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"os/exec"
 	"reflect"
@@ -40,7 +39,7 @@ func TestKubernetes_Patch_Command(t *testing.T) {
 			pattern := fmt.Sprintf(patchPattern, container.Name, container.Image)
 
 			want := exec.CommandContext(
-				context.Background(),
+				t.Context(),
 				_kubectl,
 				fmt.Sprintf("--kubeconfig=%s", c.Path),
 				fmt.Sprintf("--cluster=%s", c.Cluster),

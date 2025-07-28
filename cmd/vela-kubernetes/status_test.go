@@ -3,7 +3,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"os/exec"
 	"reflect"
@@ -31,7 +30,7 @@ func TestKubernetes_Status_Command(t *testing.T) {
 	//nolint:gosec // testing purposes
 	for _, resource := range s.Resources {
 		want := exec.CommandContext(
-			context.Background(),
+			t.Context(),
 			_kubectl,
 			fmt.Sprintf("--kubeconfig=%s", c.Path),
 			fmt.Sprintf("--cluster=%s", c.Cluster),
