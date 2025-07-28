@@ -3,6 +3,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"os/exec"
@@ -62,5 +63,5 @@ func versionCmd(c *Config) *exec.Cmd {
 	// add flag for version kubectl command
 	flags = append(flags, "version", "--output=yaml")
 
-	return exec.Command(_kubectl, flags...)
+	return exec.CommandContext(context.Background(), _kubectl, flags...)
 }

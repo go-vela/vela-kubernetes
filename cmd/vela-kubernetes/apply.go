@@ -3,6 +3,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os/exec"
 
@@ -79,7 +80,7 @@ func (a *Apply) Command(c *Config, file string) *exec.Cmd {
 		flags = append(flags, fmt.Sprintf("--output=%s", a.Output))
 	}
 
-	return exec.Command(_kubectl, flags...)
+	return exec.CommandContext(context.Background(), _kubectl, flags...)
 }
 
 // Exec formats and runs the commands for applying
