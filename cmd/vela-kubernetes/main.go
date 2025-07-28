@@ -3,8 +3,10 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
+	"net/mail"
 	"os"
 	"time"
 
@@ -30,143 +32,200 @@ func main() {
 	fmt.Fprintf(os.Stdout, "%s\n", string(bytes))
 
 	// create new CLI application
-	app := cli.NewApp()
-
 	// Plugin Information
-
-	app.Name = "vela-kubernetes"
-	app.HelpName = "vela-kubernetes"
-	app.Usage = "Vela Kubernetes plugin for managing Kubernetes resources"
-	app.Copyright = "Copyright 2020 Target Brands, Inc. All rights reserved."
-	app.Authors = []*cli.Author{
-		{
-			Name:  "Vela Admins",
-			Email: "vela@target.com",
+	cmd := cli.Command{
+		Name:      "vela-kubernetes",
+		Usage:     "Vela Kubernetes plugin for managing Kubernetes resources",
+		Copyright: "Copyright 2020 Target Brands, Inc. All rights reserved.",
+		Authors: []any{
+			&mail.Address{
+				Name:    "Vela Admins",
+				Address: "vela@target.com",
+			},
 		},
+		Version: v.Semantic(),
+		Action:  run,
 	}
 
 	// Plugin Metadata
 
-	app.Action = run
-	app.Compiled = time.Now()
-	app.Version = v.Semantic()
-
 	// Plugin Flags
 
-	app.Flags = []cli.Flag{
+	cmd.Flags = []cli.Flag{
 
 		&cli.BoolFlag{
-			EnvVars:  []string{"PARAMETER_DRY_RUN", "KUBERNETES_DRY_RUN"},
-			FilePath: "/vela/parameters/kubernetes/dry_run,/vela/secrets/kubernetes/dry_run",
-			Name:     "dry_run",
-			Usage:    "enables pretending to perform the action",
+			Name:  "dry_run",
+			Usage: "enables pretending to perform the action",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_DRY_RUN"),
+				cli.EnvVar("KUBERNETES_DRY_RUN"),
+				cli.EnvVar("VELA_BUILD_NUMBER"),
+				cli.File("//vela/parameters/kubernetes/dry_run"),
+				cli.File("/vela/secrets/kubernetes/dry_run"),
+			),
 		},
 		&cli.StringSliceFlag{
-			EnvVars:  []string{"PARAMETER_FILES", "KUBERNETES_FILES"},
-			FilePath: "/vela/parameters/kubernetes/files,/vela/secrets/kubernetes/files",
-			Name:     "files",
-			Usage:    "kubernetes files or directories to perform an action on",
+			Name:  "files",
+			Usage: "kubernetes files or directories to perform an action on",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_FILES"),
+				cli.EnvVar("KUBERNETES_FILES"),
+				cli.File("/vela/parameters/kubernetes/files"),
+				cli.File("/vela/secrets/kubernetes/files"),
+			),
 		},
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_LOG_LEVEL", "KUBERNETES_LOG_LEVEL"},
-			FilePath: "/vela/parameters/kubernetes/log_level,/vela/secrets/kubernetes/log_level",
-			Name:     "log.level",
-			Usage:    "set log level - options: (trace|debug|info|warn|error|fatal|panic)",
-			Value:    "info",
+			Name:  "log.level",
+			Usage: "set log level - options: (trace|debug|info|warn|error|fatal|panic)",
+			Value: "info",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_LOG_LEVEL"),
+				cli.EnvVar("KUBERNETES_LOG_LEVEL"),
+				cli.File("/vela/parameters/kubernetes/log_level"),
+				cli.File("/vela/secrets/kubernetes/log_level"),
+			),
 		},
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_OUTPUT", "KUBERNETES_OUTPUT"},
-			FilePath: "/vela/parameters/kubernetes/output,/vela/secrets/kubernetes/output",
-			Name:     "output",
-			Usage:    "set output for action - options: (json|yaml|wide)",
+			Name:  "output",
+			Usage: "set output for action - options: (json|yaml|wide)",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_OUTPUT"),
+				cli.EnvVar("KUBERNETES_OUTPUT"),
+				cli.File("/vela/parameters/kubernetes/output"),
+				cli.File("/vela/secrets/kubernetes/output"),
+			),
 		},
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_VERSION", "KUBERNETES_VERSION"},
-			FilePath: "/vela/parameters/kubernetes/version,/vela/secrets/kubernetes/version",
-			Name:     "kubectl.version",
-			Usage:    "set kubectl version for plugin",
+			Name:  "kubectl.version",
+			Usage: "set kubectl version for plugin",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_VERSION"),
+				cli.EnvVar("KUBERNETES_VERSION"),
+				cli.File("/vela/parameters/kubernetes/version"),
+				cli.File("/vela/secrets/kubernetes/version"),
+			),
 		},
 
 		// Config Flags
 
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_ACTION", "KUBERNETES_ACTION"},
-			FilePath: "/vela/parameters/kubernetes/action,/vela/secrets/kubernetes/action",
-			Name:     "config.action",
-			Usage:    "action to perform against Kubernetes",
+			Name:  "config.action",
+			Usage: "action to perform against Kubernetes",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_ACTION"),
+				cli.EnvVar("KUBERNETES_ACTION"),
+				cli.File("/vela/parameters/kubernetes/action"),
+				cli.File("/vela/secrets/kubernetes/action"),
+			),
 		},
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_CLUSTER", "KUBERNETES_CLUSTER"},
-			FilePath: "/vela/parameters/kubernetes/cluster,/vela/secrets/kubernetes/cluster",
-			Name:     "config.cluster",
-			Usage:    "kubectl cluster for interacting with Kubernetes",
+			Name:  "config.cluster",
+			Usage: "kubectl cluster for interacting with Kubernetes",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_CLUSTER"),
+				cli.EnvVar("KUBERNETES_CLUSTER"),
+				cli.File("/vela/parameters/kubernetes/cluster"),
+				cli.File("/vela/secrets/kubernetes/cluster"),
+			),
 		},
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_CONTEXT", "KUBERNETES_CONTEXT"},
-			FilePath: "/vela/parameters/kubernetes/context,/vela/secrets/kubernetes/context",
-			Name:     "config.context",
-			Usage:    "kubectl context for interacting with Kubernetes",
+			Name:  "config.context",
+			Usage: "kubectl context for interacting with Kubernetes",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_CONTEXT"),
+				cli.EnvVar("KUBERNETES_CONTEXT"),
+				cli.File("/vela/parameters/kubernetes/context"),
+				cli.File("/vela/secrets/kubernetes/context"),
+			),
 		},
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_CONFIG", "KUBERNETES_CONFIG", "KUBE_CONFIG"},
-			FilePath: "/vela/parameters/kubernetes/config,/vela/secrets/kubernetes/config",
-			Name:     "config.file",
-			Usage:    "kubectl configuration for interacting with Kubernetes",
+			Name:  "config.file",
+			Usage: "kubectl configuration for interacting with Kubernetes",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_CONFIG"),
+				cli.EnvVar("KUBERNETES_CONFIG"),
+				cli.EnvVar("KUBE_CONFIG"),
+				cli.File("/vela/parameters/kubernetes/config"),
+				cli.File("/vela/secrets/kubernetes/config"),
+			),
 		},
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_NAMESPACE", "KUBERNETES_NAMESPACE"},
-			FilePath: "/vela/parameters/kubernetes/namespace,/vela/secrets/kubernetes/namespace",
-			Name:     "config.namespace",
-			Usage:    "kubectl namespace for interacting with Kubernetes",
+			Name:  "config.namespace",
+			Usage: "kubectl namespace for interacting with Kubernetes",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_NAMESPACE"),
+				cli.EnvVar("KUBERNETES_NAMESPACE"),
+				cli.File("/vela/parameters/kubernetes/namespace"),
+				cli.File("/vela/secrets/kubernetes/namespace"),
+			),
 		},
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_PATH", "KUBERNETES_PATH"},
-			FilePath: "/vela/parameters/kubernetes/path,/vela/secrets/kubernetes/path",
-			Name:     "config.path",
-			Usage:    "path to kubectl configuration file",
+			Name:  "config.path",
+			Usage: "path to kubectl configuration file",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_PATH"),
+				cli.EnvVar("KUBERNETES_PATH"),
+				cli.File("/vela/parameters/kubernetes/path"),
+				cli.File("/vela/secrets/kubernetes/path"),
+			),
 		},
 
 		// Patch Flags
 
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_CONTAINERS", "KUBERNETES_CONTAINERS"},
-			FilePath: "/vela/parameters/kubernetes/containers,/vela/secrets/kubernetes/containers",
-			Name:     "patch.containers",
-			Usage:    "containers from files to patch",
+			Name:  "patch.containers",
+			Usage: "containers from files to patch",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_CONTAINERS"),
+				cli.EnvVar("KUBERNETES_CONTAINERS"),
+				cli.File("/vela/parameters/kubernetes/containers"),
+				cli.File("/vela/secrets/kubernetes/containers"),
+			),
 		},
-
 		// Status Flags
 
 		&cli.StringSliceFlag{
-			EnvVars:  []string{"PARAMETER_STATUSES", "KUBERNETES_STATUSES"},
-			FilePath: "/vela/parameters/kubernetes/resources,/vela/secrets/kubernetes/resources",
-			Name:     "status.resources",
-			Usage:    "kubernetes resources to watch status on",
+			Name:  "status.resources",
+			Usage: "kubernetes resources to watch status on",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_STATUSES"),
+				cli.EnvVar("KUBERNETES_STATUSES"),
+				cli.File("/vela/parameters/kubernetes/resources"),
+				cli.File("/vela/secrets/kubernetes/resources"),
+			),
 		},
 		&cli.DurationFlag{
-			EnvVars:  []string{"PARAMETER_TIMEOUT", "KUBERNETES_TIMEOUT"},
-			FilePath: "/vela/parameters/kubernetes/timeout,/vela/secrets/kubernetes/timeout",
-			Name:     "status.timeout",
-			Usage:    "maximum duration to watch status on kubernetes resources",
-			Value:    5 * time.Minute,
+			Name:  "status.timeout",
+			Usage: "maximum duration to watch status on kubernetes resources",
+			Value: 5 * time.Minute,
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_TIMEOUT"),
+				cli.EnvVar("KUBERNETES_TIMEOUT"),
+				cli.File("/vela/parameters/kubernetes/timeout"),
+				cli.File("/vela/secrets/kubernetes/timeout"),
+			),
 		},
 		&cli.BoolFlag{
-			EnvVars:  []string{"PARAMETER_WATCH", "KUBERNETES_WATCH"},
-			FilePath: "/vela/parameters/kubernetes/watch,/vela/secrets/kubernetes/watch",
-			Name:     "status.watch",
-			Usage:    "enables watching the status until the rollout completes",
-			Value:    true,
+			Name:  "status.watch",
+			Usage: "enables watching the status until the rollout completes",
+			Value: true,
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_WATCH"),
+				cli.EnvVar("KUBERNETES_WATCH"),
+				cli.File("/vela/parameters/kubernetes/watch"),
+				cli.File("/vela/secrets/kubernetes/watch"),
+			),
 		},
 	}
 
-	err = app.Run(os.Args)
+	err = cmd.Run(context.Background(), os.Args)
 	if err != nil {
 		logrus.Fatal(err)
 	}
 }
 
 // run executes the plugin based off the configuration provided.
-func run(c *cli.Context) error {
+func run(_ context.Context, c *cli.Command) error {
 	// set the log level for the plugin
 	switch c.String("log.level") {
 	case "t", "trace", "Trace", "TRACE":
