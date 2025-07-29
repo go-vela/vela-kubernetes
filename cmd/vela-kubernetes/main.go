@@ -55,7 +55,6 @@ func main() { //nolint: funlen // length of main function is acceptable for CLI 
 			Sources: cli.NewValueSourceChain(
 				cli.EnvVar("PARAMETER_DRY_RUN"),
 				cli.EnvVar("KUBERNETES_DRY_RUN"),
-				cli.EnvVar("VELA_BUILD_NUMBER"),
 				cli.File("//vela/parameters/kubernetes/dry_run"),
 				cli.File("/vela/secrets/kubernetes/dry_run"),
 			),
