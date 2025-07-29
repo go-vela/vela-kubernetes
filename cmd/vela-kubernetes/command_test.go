@@ -3,6 +3,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os/exec"
 	"reflect"
@@ -11,7 +12,7 @@ import (
 
 func TestKubernetes_execCmd(t *testing.T) {
 	// setup types
-	e := exec.Command("echo", "hello")
+	e := exec.CommandContext(t.Context(), "echo", "hello")
 
 	err := execCmd(e)
 	if err != nil {
@@ -31,7 +32,8 @@ func TestKubernetes_versionCmd(t *testing.T) {
 	}
 
 	//nolint:gosec // testing purposes
-	want := exec.Command(
+	want := exec.CommandContext(
+		context.Background(),
 		_kubectl,
 		fmt.Sprintf("--kubeconfig=%s", c.Path),
 		fmt.Sprintf("--cluster=%s", c.Cluster),
@@ -43,7 +45,7 @@ func TestKubernetes_versionCmd(t *testing.T) {
 
 	got := versionCmd(c)
 
-	if !reflect.DeepEqual(got, want) {
-		t.Errorf("versionCmd is %v, want %v", got, want)
+	if got.Path != want.Path || !reflect.DeepEqual(got.Args, want.Args) {
+		t.Errorf("Command is %v, want %v", got, want)
 	}
 }

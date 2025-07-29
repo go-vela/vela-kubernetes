@@ -3,6 +3,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os/exec"
 	"time"
@@ -66,7 +67,7 @@ func (s *Status) Command(c *Config, resource string) *exec.Cmd {
 	// add flag for watching status of rollout until it finishes
 	flags = append(flags, fmt.Sprintf("--watch=%v", s.Watch))
 
-	return exec.Command(_kubectl, flags...)
+	return exec.CommandContext(context.Background(), _kubectl, flags...)
 }
 
 // Exec formats and runs the commands for watching the

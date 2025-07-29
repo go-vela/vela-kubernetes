@@ -38,7 +38,8 @@ func TestKubernetes_Patch_Command(t *testing.T) {
 		for _, container := range p.Containers {
 			pattern := fmt.Sprintf(patchPattern, container.Name, container.Image)
 
-			want := exec.Command(
+			want := exec.CommandContext(
+				t.Context(),
 				_kubectl,
 				fmt.Sprintf("--kubeconfig=%s", c.Path),
 				fmt.Sprintf("--cluster=%s", c.Cluster),
@@ -53,7 +54,7 @@ func TestKubernetes_Patch_Command(t *testing.T) {
 
 			got := p.Command(c, file, container)
 
-			if !reflect.DeepEqual(got, want) {
+			if got.Path != want.Path || !reflect.DeepEqual(got.Args, want.Args) {
 				t.Errorf("Command is %v, want %v", got, want)
 			}
 		}
