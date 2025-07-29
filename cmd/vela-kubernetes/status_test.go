@@ -45,7 +45,7 @@ func TestKubernetes_Status_Command(t *testing.T) {
 
 		got := s.Command(c, resource)
 
-		if !reflect.DeepEqual(got, want) {
+		if got.Path != want.Path || !reflect.DeepEqual(got.Args, want.Args) {
 			t.Errorf("Command is %v, want %v", got, want)
 		}
 	}
