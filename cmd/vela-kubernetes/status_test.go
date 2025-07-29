@@ -29,7 +29,8 @@ func TestKubernetes_Status_Command(t *testing.T) {
 
 	//nolint:gosec // testing purposes
 	for _, resource := range s.Resources {
-		want := exec.Command(
+		want := exec.CommandContext(
+			t.Context(),
 			_kubectl,
 			fmt.Sprintf("--kubeconfig=%s", c.Path),
 			fmt.Sprintf("--cluster=%s", c.Cluster),
