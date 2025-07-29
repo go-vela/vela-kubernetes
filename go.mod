@@ -3,18 +3,17 @@ module github.com/go-vela/vela-kubernetes
 go 1.24.5
 
 require (
-	github.com/Masterminds/semver/v3 v3.4.0
-	github.com/go-vela/server v0.26.2
+	github.com/Masterminds/semver/v3 v3.3.1
+	github.com/go-vela/server v0.26.3
 	github.com/hashicorp/go-getter/v2 v2.2.3
 	github.com/joho/godotenv v1.5.1
 	github.com/sirupsen/logrus v1.9.3
-	github.com/spf13/afero v1.14.0
-	github.com/urfave/cli/v2 v2.27.7
+	github.com/spf13/afero v1.12.0
+	github.com/urfave/cli/v3 v3.3.8
 )
 
 require (
 	github.com/bgentry/go-netrc v0.0.0-20140422174119-9fd32a8b3d3d // indirect
-	github.com/cpuguy83/go-md2man/v2 v2.0.7 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
@@ -23,10 +22,7 @@ require (
 	github.com/klauspost/compress v1.17.11 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/mitchellh/go-testing-interface v1.14.1 // indirect
-	github.com/russross/blackfriday/v2 v2.1.0 // indirect
-	github.com/stretchr/testify v1.8.1 // indirect
 	github.com/ulikunitz/xz v0.5.11 // indirect
-	github.com/xrash/smetrics v0.0.0-20240521201337-686a1a2994c1 // indirect
-	golang.org/x/sys v0.30.0 // indirect
+	golang.org/x/sys v0.31.0 // indirect
 	golang.org/x/text v0.23.0 // indirect
 )
