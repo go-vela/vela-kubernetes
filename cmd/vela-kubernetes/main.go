@@ -258,6 +258,7 @@ func run(_ context.Context, c *cli.Command) error {
 	// check if a custom kubectl version was requested
 	if len(version) > 0 {
 		// attempt to install the custom kubectl version
+		//nolint: contextcheck // we are not using a context here
 		err := install(version, os.Getenv("PLUGIN_KUBECTL_VERSION"))
 		if err != nil {
 			return err
@@ -303,5 +304,6 @@ func run(_ context.Context, c *cli.Command) error {
 	}
 
 	// execute the plugin
+	//nolint: contextcheck // we are not using a context here
 	return p.Exec()
 }
