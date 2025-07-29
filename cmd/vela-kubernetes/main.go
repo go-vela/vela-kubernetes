@@ -18,7 +18,7 @@ import (
 	"github.com/go-vela/vela-kubernetes/version"
 )
 
-func main() {
+func main() { //nolint: funlen // length of main function is acceptable for CLI applications
 	// capture application version information
 	v := version.New()
 
@@ -47,12 +47,8 @@ func main() {
 		Action:  run,
 	}
 
-	// Plugin Metadata
-
 	// Plugin Flags
-
 	cmd.Flags = []cli.Flag{
-
 		&cli.BoolFlag{
 			Name:  "dry_run",
 			Usage: "enables pretending to perform the action",
@@ -169,9 +165,7 @@ func main() {
 				cli.File("/vela/secrets/kubernetes/path"),
 			),
 		},
-
 		// Patch Flags
-
 		&cli.StringFlag{
 			Name:  "patch.containers",
 			Usage: "containers from files to patch",
