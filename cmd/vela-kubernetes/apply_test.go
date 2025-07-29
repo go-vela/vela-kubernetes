@@ -28,7 +28,8 @@ func TestKubernetes_Apply_Command(t *testing.T) {
 
 	//nolint:gosec // testing purposes
 	for _, file := range a.Files {
-		want := exec.Command(
+		want := exec.CommandContext(
+			t.Context(),
 			_kubectl,
 			fmt.Sprintf("--kubeconfig=%s", c.Path),
 			fmt.Sprintf("--cluster=%s", c.Cluster),
@@ -66,7 +67,8 @@ func TestKubernetes_Apply_Command_WithDryRunTrue(t *testing.T) {
 
 	//nolint:gosec // testing purposes
 	for _, file := range a.Files {
-		want := exec.Command(
+		want := exec.CommandContext(
+			t.Context(),
 			_kubectl,
 			fmt.Sprintf("--kubeconfig=%s", c.Path),
 			fmt.Sprintf("--cluster=%s", c.Cluster),
@@ -104,7 +106,8 @@ func TestKubernetes_Apply_Command_WithDryRunAnythingNonBoolean(t *testing.T) {
 
 	//nolint:gosec // testing purposes
 	for _, file := range a.Files {
-		want := exec.Command(
+		want := exec.CommandContext(
+			t.Context(),
 			_kubectl,
 			fmt.Sprintf("--kubeconfig=%s", c.Path),
 			fmt.Sprintf("--cluster=%s", c.Cluster),
