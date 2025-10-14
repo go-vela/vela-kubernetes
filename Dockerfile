@@ -3,7 +3,7 @@
 # set a global Docker argument for the default CLI version
 #
 # https://github.com/moby/moby/issues/37345
-ARG KUBECTL_VERSION=v1.24.12
+ARG KUBECTL_VERSION=v1.34.1
 
 ###############################################################################
 ##    docker build --no-cache --target binary -t vela-kubernetes:binary .    ##
@@ -13,7 +13,7 @@ FROM alpine:3.22.1@sha256:4bcff63911fcb4448bd4fdacec207030997caf25e9bea4045fa6c8
 
 ARG KUBECTL_VERSION
 
-ADD https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl /bin/kubectl
+ADD https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl /bin/kubectl
 
 RUN chmod 0700 /bin/kubectl
 
@@ -29,7 +29,7 @@ RUN apk add --update --no-cache ca-certificates
 ##    docker build --no-cache --target gcloud -t vela-kubernetes:gcloud .    ##
 #############################################################################
 
-FROM gcr.io/google.com/cloudsdktool/google-cloud-cli:533.0.0-alpine@sha256:b219424813721ddeebaf1924a6663dbf18b1e46301c05907540d53485732bd26 as gcloud
+FROM gcr.io/google.com/cloudsdktool/google-cloud-cli:541.0.0-alpine@sha256:e5ce75af49d254d6cfceccd1877ede53738d00f8b753df2319fd093a0aeba0fc as gcloud
 
 RUN gcloud components install gke-gcloud-auth-plugin
 
