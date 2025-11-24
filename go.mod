@@ -4,12 +4,12 @@ go 1.24.5
 
 require (
 	github.com/Masterminds/semver/v3 v3.4.0
-	github.com/go-vela/server v0.27.2
+	github.com/go-vela/server v0.27.3
 	github.com/hashicorp/go-getter/v2 v2.2.3
 	github.com/joho/godotenv v1.5.1
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/afero v1.15.0
-	github.com/urfave/cli/v3 v3.5.0
+	github.com/urfave/cli/v3 v3.6.1
 )
 
 require (
