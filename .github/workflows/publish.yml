@@ -13,13 +13,13 @@ jobs:
 
     steps:
     - name: clone
-      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         # ensures we fetch tag history for the repository
         fetch-depth: 0
 
     - name: install go
-      uses: actions/setup-go@4b73464bb391d4059bd26b0524d20df3927bd417 # v6.3.0
+      uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
       with:
         # use version from go.mod file
         go-version-file: 'go.mod'
@@ -34,7 +34,7 @@ jobs:
         make build-static-ci
 
     - name: publish
-      uses: elgohr/Publish-Docker-Github-Action@master
+      uses: elgohr/Publish-Docker-Github-Action@8217e91c0369a5342a4ef2d612de87492410a666 # master
       with:
         name: target/vela-kubernetes
         cache: true
