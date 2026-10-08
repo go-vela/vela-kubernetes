@@ -5,11 +5,11 @@ go 1.26.8
 require (
 	github.com/Masterminds/semver/v3 v3.5.0
 	github.com/go-vela/server v0.28.8
-	github.com/hashicorp/go-getter/v2 v2.2.4
+	github.com/hashicorp/go-getter/v2 v2.2.5
 	github.com/joho/godotenv v1.5.1
 	github.com/sirupsen/logrus v1.10.2
 	github.com/spf13/afero v1.15.0
-	github.com/urfave/cli/v3 v3.13.0
+	github.com/urfave/cli/v3 v3.14.0
 )
 
 require (
